@@ -33,7 +33,7 @@ Open project file, compile project and run.
 Run premake
 
 ```
-./vendor/bin/premake/premake5.exe gmake
+./vendor/bin/premake/premake5 gmake
 ```
 
 Compile project and run.
@@ -41,4 +41,3 @@ Compile project and run.
 ```
 make && ./bin/Debug/OpenGLPaint
 ```
-

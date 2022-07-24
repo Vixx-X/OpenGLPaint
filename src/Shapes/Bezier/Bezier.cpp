@@ -1,6 +1,7 @@
 #include "Bezier.h"
 #include <iostream>
 #include <sstream>
+#include "../Line/Line.h"
 
 void Bezier::Set(std::vector<Vec2> new_coords)
 {
@@ -24,6 +25,20 @@ Vec2 DeCasteljau(float t, std::vector<Vec2> coefs)
 
 void Bezier::Render()
 {
+    std::vector<Vec2> points;
+    for (int t=0; t<=m_sample; ++t) {
+        points.push_back(DeCasteljau(t*1.0f/m_sample, m_coords));
+    }
+
+    for (int i=1; i<points.size(); ++i) {
+        Line l(m_border_color.r, m_border_color.g, m_border_color.g);
+        l.Set(points[i-1].x, points[i-1].y, points[i].x, points[i].y);
+        l.Render();
+    }
+}
+
+void Bezier::HardwareRender()
+{
     SetColorPixel();
 
     /* glEnable(GL_MULTISAMPLE); */
@@ -33,11 +48,6 @@ void Bezier::Render()
         glVertex2f(point.x, point.y);
     }
     glEnd();
-}
-
-void Bezier::HardwareRender()
-{
-    Render();
 }
 
 bool Bezier::OnClick(int x, int y)

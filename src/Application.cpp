@@ -10,7 +10,18 @@ namespace GLPaint
 
     void RenderUI()
     {
+        ImGui::PushID("MainWindow");
         ImGui::DockSpaceOverViewport(NULL, dockspace_flags);
+        if (ImGui::BeginDragDropTarget())
+        {
+            if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(
+                    "PUSH_SHAPE"))
+                canvas.AddPrimitive(std::string((char*)payload));
+
+            ImGui::EndDragDropTarget();
+        }
+        ImGui::PopID();
+
         ImGui::ShowDemoWindow(NULL);
 
         UI::RenderMenuBar(canvas);
@@ -32,19 +43,20 @@ namespace GLPaint
 
         int w = (GLsizei)io.DisplaySize.x;
         int h = (GLsizei)io.DisplaySize.y;
+        canvas.m_W = w, canvas.m_H = h;
         auto clear_color = canvas.m_bg_color;
 
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0, w/2, 0, h/2, -1, 1);
+        glOrtho(canvas.m_Wx, w*canvas.m_D, canvas.m_Hy, h*canvas.m_D, -1, 1);
 
         glViewport(0, 0, w, h);
         glClearColor(
-            clear_color.x * clear_color.w,
-            clear_color.y * clear_color.w,
-            clear_color.z * clear_color.w,
-            clear_color.w
-        );
+                clear_color.x * clear_color.w,
+                clear_color.y * clear_color.w,
+                clear_color.z * clear_color.w,
+                clear_color.w
+                );
         glClear(GL_COLOR_BUFFER_BIT);
 
         // render the actual canvas
@@ -61,6 +73,30 @@ namespace GLPaint
     void HandlingKeyEvents(unsigned char key, int x, int y)
     {
         switch(key) {
+            case '1':
+                // Line
+                canvas.AddPrimitive("LINE");
+                break;
+            case '2':
+                // Circle
+                canvas.AddPrimitive("CIRCLE");
+                break;
+            case '3':
+                // Ellipse
+                canvas.AddPrimitive("ELLIPSE");
+                break;
+            case '4':
+                // Rectangle
+                canvas.AddPrimitive("RECTANGLE");
+                break;
+            case '5':
+                // Triangle
+                canvas.AddPrimitive("TRIANGLE");
+                break;
+            case '6':
+                // Bezier3
+                canvas.AddPrimitive("Bezier3");
+                break;
             case 's':
                 // save
                 canvas.Save();

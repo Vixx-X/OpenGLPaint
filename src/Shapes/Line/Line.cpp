@@ -54,15 +54,19 @@ void Line::HardwareRender()
 
 bool Line::OnClick(int x, int y)
 {
-    // determinar la distancia del click a la línea
-    // si es mejor a un umbral (e.g. 3 píxeles) entonces
-    // retornas true
-    return false;
+    return abs(static_cast<int>(Apply(x)) - y) <= 3;
 }
 
 void Line::OnMove(int x, int y)
 {
+    m_coords.a.x += x, m_coords.a.y += y;
+    m_coords.b.x += x, m_coords.b.y += y;
+}
 
+void Line::Center(int w, int h)
+{
+    m_coords.a.x = w/2 - 100, m_coords.a.y = h/2;
+    m_coords.b.x = w/2 + 100, m_coords.b.y = h/2;
 }
 
 float Line::Apply(float x)

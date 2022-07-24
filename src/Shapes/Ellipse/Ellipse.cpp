@@ -100,8 +100,16 @@ bool Ellipse::OnClick(int x, int y)
 
 void Ellipse::OnMove(int x, int y)
 {
-
+    m_coords.a.x += x, m_coords.a.y += y;
+    m_coords.b.x += x, m_coords.b.y += y;
 }
+
+void Ellipse::Center(int w, int h)
+{
+    m_coords.a.x = w/2 - 150, m_coords.a.y = h/2 - 100;
+    m_coords.b.x = w/2 + 150, m_coords.b.y = h/2 + 100;
+}
+
 
 std::ostream& Ellipse::Write(std::ostream& os) const
 {

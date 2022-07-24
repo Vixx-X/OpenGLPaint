@@ -6,29 +6,38 @@ namespace GLPaint::UI {
 
     void ShapeTable(Canvas &canvas)
     {
-        int &curr_idx = canvas.m_idx;
-        for (size_t n = 0; n < canvas.m_primitives.size(); n++)
+        if (canvas.m_primitives.size() and
+            ImGui::BeginTable("ShapesTable", 1,
+            ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders
+            | ImGuiTableFlags_RowBg))
         {
-            const bool is_selected = (curr_idx == n);
-            auto item = canvas.m_primitives[n];
-            auto value = item->to_string();
-
-            if (ImGui::Selectable(value.c_str(), is_selected,
-                        ImGuiSelectableFlags_AllowDoubleClick))
-                if (ImGui::IsMouseDoubleClicked(0))
-                    curr_idx = n;
-
-            if (ImGui::IsItemActive() and !ImGui::IsItemHovered())
+            int &curr_idx = canvas.m_idx;
+            for (int n = canvas.m_primitives.size()-1; ~n; --n)
             {
-                int n_next = n + (ImGui::GetMouseDragDelta(0).y < 0.f ? -1 : 1);
-                if (n_next >= 0 && n_next < canvas.m_primitives.size())
+                const bool is_selected = (curr_idx == n);
+                auto item = canvas.m_primitives[n];
+                auto value = item->to_string();
+
+                ImGui::TableNextColumn();
+
+                if (ImGui::Selectable(value.c_str(), is_selected,
+                            ImGuiSelectableFlags_AllowDoubleClick))
+                    if (ImGui::IsMouseDoubleClicked(0))
+                        curr_idx = n;
+
+                if (ImGui::IsItemActive() and !ImGui::IsItemHovered())
                 {
-                    canvas.m_primitives[n] = canvas.m_primitives[n_next];
-                    canvas.m_primitives[n_next] = item;
-                    if (is_selected) curr_idx = n_next;
-                    ImGui::ResetMouseDragDelta();
+                    int n_next = n + (ImGui::GetMouseDragDelta(0).y < 0.f ? 1 : -1);
+                    if (n_next >= 0 && n_next < canvas.m_primitives.size())
+                    {
+                        canvas.m_primitives[n] = canvas.m_primitives[n_next];
+                        canvas.m_primitives[n_next] = item;
+                        if (is_selected) curr_idx = n_next;
+                        ImGui::ResetMouseDragDelta();
+                    }
                 }
             }
+            ImGui::EndTable();
         }
     }
 
@@ -61,6 +70,12 @@ namespace GLPaint::UI {
         auto p = canvas.GetSelected();
         p->ui();
 
+        if (ImGui::Button("Center")) {
+            ImGuiIO& io = ImGui::GetIO();
+            int w = (GLsizei)io.DisplaySize.x;
+            int h = (GLsizei)io.DisplaySize.y;
+            p->Center(w, h);
+        }
         if (ImGui::Button("Send Foreground")) {
             canvas.Foreground();
         }
@@ -72,15 +87,19 @@ namespace GLPaint::UI {
         }
     }
 
-    void RenderShapesProperties(Canvas &canvas) {
-        if (ImGui::Begin("Entities")) {
+    void RenderShapesProperties(Canvas &canvas)
+    {
+        if (ImGui::Begin("Entities"))
+        {
             ShapeTable(canvas);
-
-            if (canvas.IsSelected()) {
-                ShapeProperty(canvas);
-            }
-
             ImGui::End();
+        }
+        if (canvas.IsSelected()) {
+            if (ImGui::Begin("Properties"))
+            {
+                ShapeProperty(canvas);
+                ImGui::End();
+            }
         }
     }
 }
@@ -162,17 +181,27 @@ void Ellipse::ui(bool allowFiller)
 
 void Circle::ui(bool allowFiller)
 {
-    Shape::ui(true);
+    Ellipse::ui(true);
+/*     Shape::ui(true); */
 
-    ImGuiIO& io = ImGui::GetIO();
-    int w = (GLsizei)io.DisplaySize.x;
-    int h = (GLsizei)io.DisplaySize.y;
+/*     float x, y, r; */
+/*     x = (m_coords.x + m_coords.z) / 2; */
+/*     y = (m_coords.y + m_coords.w) / 2; */
+/*     r = std::max((m_coords.x - m_coords.z), (m_coords.y - m_coords.w))/ 2; */
 
-    ImGui::SliderFloat("X0", &m_coords.x, 0.00f, w);
-    ImGui::SliderFloat("Y0", &m_coords.y, 0.00f, h);
+/*     ImGuiIO& io = ImGui::GetIO(); */
+/*     int w = (GLsizei)io.DisplaySize.x; */
+/*     int h = (GLsizei)io.DisplaySize.y; */
 
-    ImGui::SliderFloat("X1", &m_coords.z, 0.00f, w);
-    ImGui::SliderFloat("Y1", &m_coords.w, 0.00f, h);
+/*     ImGui::SliderFloat("X", &x, 0.00f, w); */
+/*     ImGui::SliderFloat("Y", &y, 0.00f, h); */
+
+/*     ImGui::SliderFloat("R", &r, 1.0f, 100.0f); */
+
+/*     m_coords.x = x - r; */
+/*     m_coords.z = x + r; */
+/*     m_coords.y = y - r; */
+/*     m_coords.w = y + r; */
 }
 
 void Bezier::ui(bool allowFiller)

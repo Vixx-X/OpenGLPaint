@@ -18,6 +18,7 @@ class Rectangle : public Shape
 
         bool OnClick(int x, int y) override;
         void OnMove(int x, int y) override;
+        void Center(int w, int h) override;
 
         std::ostream& Write(std::ostream& os) const override;
         std::istream& Read(std::istream& is) override;

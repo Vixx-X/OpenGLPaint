@@ -4,9 +4,6 @@
 
 class Circle : public Ellipse
 {
-    private:
-        Vec4 m_coords;
-
     public:
 
         Circle() : Ellipse() { }
@@ -14,6 +11,8 @@ class Circle : public Ellipse
 
         std::ostream& Write(std::ostream& os) const override;
         std::istream& Read(std::istream& is) override;
+
+        void Center(int w, int h) override;
 
         void ui(bool allowFiller = true) override;
 

@@ -19,6 +19,16 @@ namespace GLPaint
         m_primitives.push_back(&primitive);
     }
 
+    void Canvas::AddPrimitive(std::string primitive_name)
+    {
+        Shape * shape = nullptr;
+        if (Shapes::GetPrimitive(primitive_name, shape)) {
+            shape->Center(m_W, m_H);
+            AddPrimitive(*shape);
+            m_idx = m_primitives.size() - 1;
+        }
+    }
+
     void Canvas::Clear()
     {
         Unselect();

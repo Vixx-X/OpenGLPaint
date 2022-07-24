@@ -3,6 +3,13 @@
 
 namespace GLPaint::UI
 {
+    static void ShowCanvasMenu(Canvas &canvas)
+    {
+        ImGui::SliderFloat("Zoom", &canvas.m_D, 0.25f, 1.0f);
+        ImGui::SliderInt("Pan X", &canvas.m_Wx, 0, canvas.m_W);
+        ImGui::SliderInt("Pan Y", &canvas.m_Hy, 0, canvas.m_H);
+    }
+
     static void ShowFileMenu(Canvas &canvas)
     {
         if (ImGui::MenuItem("New", "x (Clear)")) {
@@ -46,6 +53,11 @@ namespace GLPaint::UI
             if (ImGui::BeginMenu("Render"))
             {
                 ShowRenderMenu(canvas);
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Canvas"))
+            {
+                ShowCanvasMenu(canvas);
                 ImGui::EndMenu();
             }
             ImGui::EndMainMenuBar();

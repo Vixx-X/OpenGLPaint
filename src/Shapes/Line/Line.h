@@ -20,6 +20,7 @@ class Line : public Shape
 
         bool OnClick(int x, int y) override;
         void OnMove(int x, int y) override;
+        void Center(int w, int h) override;
 
         float Intersec(const Line &other);
         float Apply(float x);

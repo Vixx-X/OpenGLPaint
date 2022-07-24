@@ -2,6 +2,12 @@
 #include <iostream>
 #include <sstream>
 
+void Circle::Center(int w, int h)
+{
+    m_coords.a.x = w/2 - 100, m_coords.a.y = h/2 - 100;
+    m_coords.b.x = w/2 + 100, m_coords.b.y = h/2 + 100;
+}
+
 std::ostream& Circle::Write(std::ostream& os) const
 {
     os << (m_filled ? "FILLED_CIRCLE": "CIRCLE") << " ";
@@ -27,3 +33,4 @@ std::istream& Circle::Read(std::istream& is)
 
     return Shape::Read(is);
 }
+

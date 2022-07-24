@@ -13,6 +13,8 @@ namespace GLPaint
     struct Canvas
     {
 
+        int m_W, m_H, m_Wx, m_Hy;
+        float m_D;
         Vec4 m_bg_color;
         std::vector<Shape*> m_primitives;
         bool m_hardware_acc;
@@ -20,13 +22,15 @@ namespace GLPaint
         float m_psize;
 
         Canvas()
-            : m_bg_color(1.0f, 1.0f, 1.0f, 1.0f), m_primitives(),
+            : m_W{}, m_H{}, m_Wx{}, m_Hy{}, m_D{1.0f},
+            m_bg_color(1.0f, 1.0f, 1.0f, 1.0f), m_primitives(),
             m_hardware_acc(), m_idx(-1), m_psize() { }
 
         void ToggleHardwareAcceleration();
         void SetBg(float r, float g, float b);
 
         void AddPrimitive(Shape &primitive);
+        void AddPrimitive(std::string primitive_name);
         void Clear();
 
         void Save();

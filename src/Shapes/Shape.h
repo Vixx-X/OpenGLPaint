@@ -44,6 +44,7 @@ class Shape
 
         virtual bool OnClick(int x, int y) = 0;
         virtual void OnMove(int x, int y) = 0;
+        virtual void Center(int w, int h) = 0;
 
         virtual std::ostream& Write(std::ostream& os) const = 0;
         virtual std::istream& Read(std::istream& is) = 0;

@@ -60,7 +60,26 @@ bool Bezier::OnClick(int x, int y)
 
 void Bezier::OnMove(int x, int y)
 {
+    for (auto &p : m_coords) {
+        p.x += x;
+        p.y += y;
+    }
+}
 
+void Bezier::Center(int w, int h)
+{
+    float LineSize = 300.0f;
+    float Dx = LineSize / m_coords.size();
+    float x = w/2 - LineSize/2;
+    bool flipY = false;
+    int it = 0;
+    for (auto &p : m_coords) {
+        p.x = x  + it*Dx;
+        p.y = h/2;
+        p.y += flipY ? -100: 100;
+        flipY != flipY;
+        ++it;
+    }
 }
 
 std::ostream& Bezier::Write(std::ostream& os) const

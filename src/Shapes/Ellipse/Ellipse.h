@@ -4,7 +4,7 @@
 
 class Ellipse : public Shape
 {
-    private:
+    protected:
         Vec4 m_coords;
 
     public:
@@ -19,6 +19,7 @@ class Ellipse : public Shape
 
         bool OnClick(int x, int y) override;
         void OnMove(int x, int y) override;
+        virtual void Center(int w, int h) override;
 
         virtual std::ostream& Write(std::ostream& os) const override;
         virtual std::istream& Read(std::istream& is) override;

@@ -112,7 +112,16 @@ bool Triangle::OnClick(int x, int y)
 
 void Triangle::OnMove(int x, int y)
 {
+    m_coords[0].x += x, m_coords[0].y = y;
+    m_coords[1].x += x, m_coords[1].y = y;
+    m_coords[2].x += x, m_coords[2].y = y;
+}
 
+void Triangle::Center(int w, int h)
+{
+    m_coords[0].x = w/2 - 100, m_coords[0].y = h/2 + 100;
+    m_coords[1].x = w/2 + 100, m_coords[1].y = h/2 + 100;
+    m_coords[2].x = w/2, m_coords[2].y = h/2 - 100;
 }
 
 std::ostream& Triangle::Write(std::ostream& os) const

@@ -71,7 +71,14 @@ bool Rectangle::OnClick(int x, int y)
 
 void Rectangle::OnMove(int x, int y)
 {
+    m_coords.a.x += x, m_coords.a.y += y;
+    m_coords.b.x += x, m_coords.b.y += y;
+}
 
+void Rectangle::Center(int w, int h)
+{
+    m_coords.a.x = w/2 - 100, m_coords.a.y = h/2 - 100;
+    m_coords.b.x = w/2 + 100, m_coords.b.y = h/2 + 100;
 }
 
 std::ostream& Rectangle::Write(std::ostream& os) const

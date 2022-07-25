@@ -7,6 +7,15 @@ void Rectangle::Set(int x0, int y0, int x1, int y1)
     m_coords = Vec4(x0, y0, x1, y1);
 }
 
+std::vector<std::reference_wrapper<float>> Rectangle::GetVertex()
+{
+    std::vector<std::reference_wrapper<float>> ret = {
+        std::ref(m_coords.x), std::ref(m_coords.y),
+        std::ref(m_coords.z), std::ref(m_coords.w)
+    };
+    return ret;
+}
+
 void Rectangle::Render()
 {
     Vec2 a = {
@@ -41,23 +50,23 @@ void Rectangle::HardwareRender()
     if (m_filled) {
         SetFillColorPixel();
 
-        glPolygonMode(GL_FRONT, GL_FILL);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glBegin(GL_QUADS);
-        glVertex2i(m_coords.a.x, m_coords.a.y);
-        glVertex2i(m_coords.b.x, m_coords.a.y);
-        glVertex2i(m_coords.b.x, m_coords.b.y);
-        glVertex2i(m_coords.a.x, m_coords.b.y);
+        PutVertex(m_coords.a.x, m_coords.a.y);
+        PutVertex(m_coords.b.x, m_coords.a.y);
+        PutVertex(m_coords.b.x, m_coords.b.y);
+        PutVertex(m_coords.a.x, m_coords.b.y);
         glEnd();
-        glPolygonMode(GL_FRONT, GL_LINE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
 
     SetColorPixel();
 
     glBegin(GL_QUADS);
-    glVertex2i(m_coords.a.x, m_coords.a.y);
-    glVertex2i(m_coords.b.x, m_coords.a.y);
-    glVertex2i(m_coords.b.x, m_coords.b.y);
-    glVertex2i(m_coords.a.x, m_coords.b.y);
+    PutVertex(m_coords.a.x, m_coords.a.y);
+    PutVertex(m_coords.b.x, m_coords.a.y);
+    PutVertex(m_coords.b.x, m_coords.b.y);
+    PutVertex(m_coords.a.x, m_coords.b.y);
     glEnd();
 }
 

@@ -30,13 +30,21 @@ namespace GLPaint::UI
             canvas.ToggleHardwareAcceleration();
         }
         if (ImGui::BeginMenu("Background Color")) {
-            ImGui::ColorPicker4(
+            ImGui::ColorPicker3(
                     "Background Color", (float*)&canvas.m_bg_color);
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Point Size")) {
             ImGui::SliderFloat(
                     "Point Size", &canvas.m_psize, 1.0f, 100.0f);
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Gizmo Config")) {
+            ImGui::SliderFloat(
+                    "Gizmo Size", &canvas.m_gizmo_psize, 20.0f, 100.0f);
+            ImGui::Separator();
+            ImGui::ColorPicker3(
+                    "Gizmo Color", (float*)&canvas.m_gizmo_color);
             ImGui::EndMenu();
         }
     }

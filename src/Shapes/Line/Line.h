@@ -13,6 +13,7 @@ class Line : public Shape
         Line(float r, float g, float b) : Shape(r, g, b) { }
 
         void Set(int x0, int y0, int x1, int y1);
+        std::vector<std::reference_wrapper<float>> GetVertex() override;
         Vec4 &GetCoords();
 
         void Render() override;

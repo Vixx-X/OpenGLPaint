@@ -10,6 +10,8 @@
 
 #include <istream>
 #include <ostream>
+#include <vector>
+#include <functional>
 
 class Shape
 {
@@ -17,15 +19,20 @@ class Shape
         Vec3 m_border_color;
         Vec4 m_filler_color;
         bool m_filled;
+        int m_id;
 
     public:
         Shape() : m_border_color(0, 0, 0), m_filler_color(0, 0, 0, 0.0f),
-            m_filled(false) { }
+            m_filled(false), m_id() { }
         Shape(float r, float g, float b)
             : m_border_color(r, g, b), m_filler_color(r, g, b, 0.0f),
-            m_filled(false) { }
+            m_filled(false), m_id() { }
 
         ~Shape() = default;
+
+        void SetID(int id);
+        void PutVertex(float x, float y);
+        virtual std::vector<std::reference_wrapper<float>> GetVertex() = 0;
 
         void PutPixel(int x, int y);
         void PutHLine(int x1, int y, int x2);

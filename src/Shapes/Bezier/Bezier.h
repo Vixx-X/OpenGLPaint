@@ -17,6 +17,7 @@ class Bezier : public Shape
 
         void Set(std::vector<Vec2> new_coords);
         void SetSize(size_t N);
+        std::vector<std::reference_wrapper<float>> GetVertex() override;
 
         void Render() override;
         void HardwareRender() override;

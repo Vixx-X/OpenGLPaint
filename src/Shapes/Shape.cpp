@@ -2,10 +2,20 @@
 #include <iostream>
 #include <sstream>
 
+void Shape::SetID(int id)
+{
+    m_id = id;
+}
+
+void Shape::PutVertex(float x, float y)
+{
+    glVertex2f(x, y);
+}
+
 void Shape::PutPixel(int x, int y)
 {
     glBegin(GL_POINTS);
-    glVertex2i(x, y);
+    PutVertex(x, y);
     glEnd();
 }
 
@@ -16,7 +26,7 @@ void Shape::PutHLine(int x1, int y, int x2)
 
     glBegin(GL_POINTS);
     for (int t=a; t <= b; ++t) {
-        glVertex2i(t, y);
+        PutVertex(t, y);
     }
     glEnd();
 }

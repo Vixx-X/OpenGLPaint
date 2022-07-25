@@ -9,6 +9,8 @@ class Circle : public Ellipse
         Circle() : Ellipse() { }
         Circle(float r, float g, float b) : Ellipse(r, g, b) { }
 
+        std::vector<std::reference_wrapper<float>> GetVertex() override;
+
         std::ostream& Write(std::ostream& os) const override;
         std::istream& Read(std::istream& is) override;
 

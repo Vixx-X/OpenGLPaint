@@ -15,16 +15,18 @@ namespace GLPaint
 
         int m_W, m_H, m_Wx, m_Hy;
         float m_D;
-        Vec4 m_bg_color;
+        Vec4 m_bg_color, m_gizmo_color;
         std::vector<Shape*> m_primitives;
         bool m_hardware_acc;
         int m_idx;
-        float m_psize;
+        float m_psize, m_gizmo_psize;
 
         Canvas()
             : m_W{}, m_H{}, m_Wx{}, m_Hy{}, m_D{1.0f},
-            m_bg_color(1.0f, 1.0f, 1.0f, 1.0f), m_primitives(),
-            m_hardware_acc(), m_idx(-1), m_psize() { }
+            m_bg_color(1.0f, 1.0f, 1.0f, 1.0f),
+            m_gizmo_color(1.0f, 0.0f, 0.0f, 1.0f),
+            m_primitives(), m_hardware_acc(), m_idx(-1),
+            m_psize(), m_gizmo_psize(10) { }
 
         void ToggleHardwareAcceleration();
         void SetBg(float r, float g, float b);

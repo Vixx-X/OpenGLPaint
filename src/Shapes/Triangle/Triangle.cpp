@@ -11,6 +11,16 @@ void Triangle::Set(int x0, int y0, int x1, int y1, int x2, int y2)
     m_coords[2] = {(float)x2, (float)y2};
 }
 
+std::vector<std::reference_wrapper<float>> Triangle::GetVertex()
+{
+    std::vector<std::reference_wrapper<float>> ret = {
+        std::ref(m_coords[0].x), std::ref(m_coords[0].y),
+        std::ref(m_coords[1].x), std::ref(m_coords[1].y),
+        std::ref(m_coords[2].x), std::ref(m_coords[2].y)
+    };
+    return ret;
+}
+
 void Triangle::RenderInside()
 {
     float y1 = m_coords[0].y;
@@ -86,7 +96,7 @@ void Triangle::HardwareRender()
 
         glBegin(GL_TRIANGLES);
         for (auto &p : m_coords) {
-            glVertex2i(p.x, p.y);
+            PutVertex(p.x, p.y);
         }
         glEnd();
     }
@@ -96,8 +106,8 @@ void Triangle::HardwareRender()
     int M = m_coords.size();
     glBegin(GL_LINES);
     for (int i=0; i<M; ++i) {
-        glVertex2i(m_coords[i].x, m_coords[i].y);
-        glVertex2i(m_coords[(i + 1)%M].x, m_coords[(i + 1)%M].y);
+        PutVertex(m_coords[i].x, m_coords[i].y);
+        PutVertex(m_coords[(i + 1)%M].x, m_coords[(i + 1)%M].y);
     }
     glEnd();
 }

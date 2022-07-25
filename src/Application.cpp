@@ -5,6 +5,7 @@ namespace GLPaint
 {
 
     static Canvas canvas; // app states and/or stores
+    static Gizmo* gizmo;
     static ImGuiDockNodeFlags dockspace_flags =
         ImGuiDockNodeFlags_PassthruCentralNode;
 
@@ -15,7 +16,7 @@ namespace GLPaint
         if (ImGui::BeginDragDropTarget())
         {
             if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(
-                    "PUSH_SHAPE"))
+                        "PUSH_SHAPE"))
                 canvas.AddPrimitive(std::string((char*)payload));
 
             ImGui::EndDragDropTarget();
@@ -27,6 +28,17 @@ namespace GLPaint
         UI::RenderMenuBar(canvas);
         UI::RenderPalette(canvas);
         UI::RenderShapesProperties(canvas);
+
+        if (gizmo and (!canvas.IsSelected() or
+                    (canvas.GetSelected() != gizmo->shape))) {
+            delete gizmo;
+            gizmo = nullptr;
+        }
+
+        if (canvas.IsSelected() and !gizmo) {
+            gizmo = new Gizmo(canvas.GetSelected(),
+                    &canvas.m_gizmo_color, &canvas.m_gizmo_psize);
+        }
     }
 
     void Render()
@@ -63,6 +75,7 @@ namespace GLPaint
         glPointSize(canvas.m_psize);
         glLineWidth(canvas.m_psize);
         canvas.Render();
+        if (gizmo) gizmo->Render();
 
         ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
@@ -72,91 +85,109 @@ namespace GLPaint
 
     void HandlingKeyEvents(unsigned char key, int x, int y)
     {
-        switch(key) {
-            case '1':
-                // Line
-                canvas.AddPrimitive("LINE");
-                break;
-            case '2':
-                // Circle
-                canvas.AddPrimitive("CIRCLE");
-                break;
-            case '3':
-                // Ellipse
-                canvas.AddPrimitive("ELLIPSE");
-                break;
-            case '4':
-                // Rectangle
-                canvas.AddPrimitive("RECTANGLE");
-                break;
-            case '5':
-                // Triangle
-                canvas.AddPrimitive("TRIANGLE");
-                break;
-            case '6':
-                // Bezier3
-                canvas.AddPrimitive("Bezier3");
-                break;
-            case 's':
-                // save
-                canvas.Save();
-                break;
-            case 'L':
-                // load
-                canvas.Load();
-                break;
-            case 'x':
-                // clear
-                canvas.Clear();
-                break;
-            case 'c':
-                // change border color
-                if (canvas.IsSelected()) {}
-                break;
-            case 'r':
-                // change filler color
-                if (canvas.IsSelected()) {}
-                break;
-            case 'h':
-                // toggle hardware acc
-                canvas.ToggleHardwareAcceleration();
-                break;
-            case 'f':
-                // send to foreground
-                if (canvas.IsSelected())
-                    canvas.Foreground();
-                break;
-            case 'b':
-                // send to background
-                if (canvas.IsSelected())
-                    canvas.Background();
-                break;
-            case '-':
-                // send to foreground
-                if (canvas.IsSelected())
-                    canvas.Up();
-                break;
-            case '+':
-                // send to background
-                if (canvas.IsSelected())
-                    canvas.Down();
-                break;
-            case 'u':
-                // unselect
-                canvas.Unselect(); // dont need to check
-                break;
-            /* case 8: */
-            case 127:
-                // delete
-                if (canvas.IsSelected())
-                    canvas.Delete();
-                break;
-            default:
-                break;
+        ImGui_ImplGLUT_KeyboardFunc(key, x, y); // calling ImGui handler
+
+        ImGuiIO& io = ImGui::GetIO();
+        if (!io.WantCaptureKeyboard) {
+            switch(key) {
+                case '1':
+                    // Line
+                    canvas.AddPrimitive("LINE");
+                    break;
+                case '2':
+                    // Circle
+                    canvas.AddPrimitive("CIRCLE");
+                    break;
+                case '3':
+                    // Ellipse
+                    canvas.AddPrimitive("ELLIPSE");
+                    break;
+                case '4':
+                    // Rectangle
+                    canvas.AddPrimitive("RECTANGLE");
+                    break;
+                case '5':
+                    // Triangle
+                    canvas.AddPrimitive("TRIANGLE");
+                    break;
+                case '6':
+                    // Bezier3
+                    canvas.AddPrimitive("Bezier3");
+                    break;
+                case 's':
+                    // save
+                    canvas.Save();
+                    break;
+                case 'L':
+                    // load
+                    canvas.Load();
+                    break;
+                case 'x':
+                    // clear
+                    canvas.Clear();
+                    break;
+                case 'c':
+                    // change border color
+                    if (canvas.IsSelected()) {}
+                    break;
+                case 'r':
+                    // change filler color
+                    if (canvas.IsSelected()) {}
+                    break;
+                case 'h':
+                    // toggle hardware acc
+                    canvas.ToggleHardwareAcceleration();
+                    break;
+                case 'f':
+                    // send to foreground
+                    if (canvas.IsSelected())
+                        canvas.Foreground();
+                    break;
+                case 'b':
+                    // send to background
+                    if (canvas.IsSelected())
+                        canvas.Background();
+                    break;
+                case '-':
+                    // send to foreground
+                    if (canvas.IsSelected())
+                        canvas.Up();
+                    break;
+                case '+':
+                    // send to background
+                    if (canvas.IsSelected())
+                        canvas.Down();
+                    break;
+                case 'u':
+                    // unselect
+                    canvas.Unselect(); // dont need to check
+                    break;
+                    /* case 8: */
+                case 127:
+                    // delete
+                    if (canvas.IsSelected())
+                        canvas.Delete();
+                    break;
+                default:
+                    break;
+            }
         }
 
-        ImGui_ImplGLUT_KeyboardFunc(key, x, y); // calling ImGui handler
         glutPostRedisplay();
+    }
+
+    void HandlingMouseEvent(int glut_button, int state, int x, int y)
+    {
+        ImGui_ImplGLUT_MouseFunc(glut_button, state, x, y);
+
+        ImGuiIO& io = ImGui::GetIO();
+        int h = (GLsizei)io.DisplaySize.y;
+
+        if (!io.WantCaptureMouse and glut_button == GLUT_LEFT_BUTTON) {
+            if (!(gizmo and (gizmo->IsEditing or gizmo->Select(x, h - y)))) {
+                canvas.Select(x, h - y);
+            }
+        }
     }
 
     void ImGui_ImplGLUT_InstallCustomFuncs()
@@ -164,7 +195,7 @@ namespace GLPaint
         glutReshapeFunc(ImGui_ImplGLUT_ReshapeFunc);
         glutMotionFunc(ImGui_ImplGLUT_MotionFunc);
         glutPassiveMotionFunc(ImGui_ImplGLUT_MotionFunc);
-        glutMouseFunc(ImGui_ImplGLUT_MouseFunc);
+        glutMouseFunc(HandlingMouseEvent);
 #ifdef __FREEGLUT_EXT_H__
         glutMouseWheelFunc(ImGui_ImplGLUT_MouseWheelFunc);
 #endif

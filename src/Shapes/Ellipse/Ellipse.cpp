@@ -7,6 +7,15 @@ void Ellipse::Set(int x0, int y0, int x1, int y1)
     m_coords = Vec4(x0, y0, x1, y1);
 }
 
+std::vector<std::reference_wrapper<float>> Ellipse::GetVertex()
+{
+    std::vector<std::reference_wrapper<float>> ret = {
+        std::ref(m_coords.x), std::ref(m_coords.y),
+        std::ref(m_coords.z), std::ref(m_coords.w)
+    };
+    return ret;
+}
+
 void Ellipse::Render()
 {
     float xc = (m_coords.a.x + m_coords.b.x)/2;

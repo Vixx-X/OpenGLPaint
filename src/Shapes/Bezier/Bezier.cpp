@@ -8,6 +8,16 @@ void Bezier::Set(std::vector<Vec2> new_coords)
     m_coords = new_coords;
 }
 
+std::vector<std::reference_wrapper<float>> Bezier::GetVertex()
+{
+    std::vector<std::reference_wrapper<float>> ret;
+    for (int i = 0; i < m_coords.size(); ++i) {
+        ret.push_back(std::ref(m_coords[i].x));
+        ret.push_back(std::ref(m_coords[i].y));
+    }
+    return ret;
+}
+
 void Bezier::SetSize(size_t N)
 {
     m_coords.resize(N, m_coords[m_size-1]);
@@ -45,7 +55,7 @@ void Bezier::HardwareRender()
     glBegin(GL_LINE_STRIP);
     for (int t=0; t<=m_sample; ++t) {
         auto point = DeCasteljau(t*1.0f/m_sample, m_coords);
-        glVertex2f(point.x, point.y);
+        PutPixel(point.x, point.y);
     }
     glEnd();
 }

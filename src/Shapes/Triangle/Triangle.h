@@ -13,6 +13,7 @@ class Triangle : public Shape
         Triangle(float r, float g, float b) : Shape(r, g, b) { }
 
         void Set(int x0, int y0, int x1, int y1, int x2, int y2);
+        std::vector<std::reference_wrapper<float>> GetVertex() override;
 
         void RenderInside();
         void Render() override;

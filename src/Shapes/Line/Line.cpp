@@ -12,6 +12,15 @@ Vec4 &Line::GetCoords()
     return m_coords;
 }
 
+std::vector<std::reference_wrapper<float>> Line::GetVertex()
+{
+    std::vector<std::reference_wrapper<float>> ret = {
+        std::ref(m_coords.x), std::ref(m_coords.y),
+        std::ref(m_coords.z), std::ref(m_coords.w)
+    };
+    return ret;
+}
+
 void Line::Render()
 {
     int x0 = m_coords.a.x, y0 = m_coords.a.y,
@@ -47,8 +56,8 @@ void Line::HardwareRender()
     SetColorPixel();
 
     glBegin(GL_LINES);
-    glVertex2i(m_coords.a.x, m_coords.a.y);
-    glVertex2i(m_coords.b.x, m_coords.b.y);
+    PutVertex(m_coords.a.x, m_coords.a.y);
+    PutVertex(m_coords.b.x, m_coords.b.y);
     glEnd();
 }
 

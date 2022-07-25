@@ -7,7 +7,7 @@ Run premake
 For vs 2022:
 
 ```
-call ./vendor/bin/premake/premake5.exe vs2022
+call vendor\bin\premake\premake5.exe vs2022
 ```
 
 Other options are:

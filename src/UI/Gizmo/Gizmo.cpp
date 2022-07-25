@@ -72,7 +72,7 @@ void Gizmo::Render()
     for (int i=0; i < points.size(); i+=2) {
         Vec2 p = {points[i], points[i + 1]};
         if (!didEdit and canEdit and m_editing_idx != -2 and
-            (p.dist(pos) <= *m_circle_size or m_editing_idx == i)) {
+            (m_editing_idx == i or p.dist(pos) <= *m_circle_size)) {
             points[i    ].get() = pos.x;
             points[i + 1].get() = pos.y;
             didEdit = true;
@@ -85,7 +85,7 @@ void Gizmo::Render()
     if (didEdit) return;
 
     if (!didEdit and canEdit) {
-        if (shape->OnClick(pos.x, pos.y) or m_editing_idx == -2) {
+        if (m_editing_idx == -2 or shape->OnClick(pos.x, pos.y)) {
             shape->OnMove(
                 pos.x - m_prev.x,
                 pos.y - m_prev.y

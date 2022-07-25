@@ -63,7 +63,10 @@ void Line::HardwareRender()
 
 bool Line::OnClick(int x, int y)
 {
-    return abs(static_cast<int>(Apply(x)) - y) <= 3;
+    const int ERR = 3; // +- error
+    Vec2 p = {(float)x, (float)y};
+    float pa = p.dist(m_coords.a), pb = p.dist(m_coords.b), ab = m_coords.a.dist(m_coords.b);
+    return std::abs(ab - pa - pb) < ERR;
 }
 
 void Line::OnMove(int x, int y)
@@ -76,36 +79,6 @@ void Line::Center(int w, int h)
 {
     m_coords.a.x = w/2 - 100, m_coords.a.y = h/2;
     m_coords.b.x = w/2 + 100, m_coords.b.y = h/2;
-}
-
-float Line::Apply(float x)
-{
-    if (m_coords.x == m_coords.z) return INFINITY;
-    float m = (m_coords.y - m_coords.w) / (m_coords.x - m_coords.z);
-    float b = m_coords.y - m * m_coords.x;
-    return m * x + b;
-}
-
-float Line::Intersec(const Line &other)
-{
-    // this being vertical line is not supported
-    if (m_coords.x == m_coords.z) return INFINITY;
-
-    if (other.m_coords.x == other.m_coords.z) {
-        // other is vertical line
-        float aux = Apply(other.m_coords.x);
-        float y1 = std::max(m_coords.y, m_coords.w),
-              y2 = std::min(m_coords.y, m_coords.w);
-        return aux <= y2 and aux >= y1 ? other.m_coords.x : INFINITY;
-    }
-
-    float ma = (m_coords.y - m_coords.w)/(m_coords.x - m_coords.z);
-    float mb = (other.m_coords.y - other.m_coords.w)/(other.m_coords.x - other.m_coords.z);
-
-    Vec2 a = {ma, m_coords.y - ma*m_coords.x},
-         b = {mb, other.m_coords.y - mb*m_coords.x};
-
-    return a.x == b.x? INFINITY : (b.y - a.y)/(a.x - b.x);
 }
 
 std::ostream& Line::Write(std::ostream& os) const

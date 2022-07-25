@@ -23,9 +23,6 @@ class Line : public Shape
         void OnMove(int x, int y) override;
         void Center(int w, int h) override;
 
-        float Intersec(const Line &other);
-        float Apply(float x);
-
         std::ostream& Write(std::ostream& os) const override;
         std::istream& Read(std::istream& is) override;
 

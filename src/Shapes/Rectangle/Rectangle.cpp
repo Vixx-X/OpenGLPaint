@@ -1,6 +1,8 @@
 #include "Rectangle.h"
+#include "../Line/Line.h"
 #include <iostream>
 #include <sstream>
+#include <queue>
 
 void Rectangle::Set(int x0, int y0, int x1, int y1)
 {
@@ -18,6 +20,7 @@ std::vector<std::reference_wrapper<float>> Rectangle::GetVertex()
 
 void Rectangle::Render()
 {
+    std::queue<Vec2> q;
     Vec2 a = {
         std::min(m_coords.a.x, m_coords.b.x),
         std::min(m_coords.a.y, m_coords.b.y)
@@ -28,12 +31,8 @@ void Rectangle::Render()
         std::max(m_coords.a.y, m_coords.b.y)
     };
 
-    SetColorPixel();
-    PutHLine(a.x, a.y, b.x);
-    PutHLine(a.x, b.y, b.x);
-
     for (int t = a.y + 1; t < b.y; ++t) {
-        PutPixel(a.x, t);
+        q.push({a.x, (float)t});
 
         if (m_filled) {
             SetFillColorPixel();
@@ -41,7 +40,16 @@ void Rectangle::Render()
             SetColorPixel();
         }
 
-        PutPixel(b.x, t);
+        q.push({b.x, (float)t});
+    }
+
+    SetColorPixel();
+    PutHLine(a.x, a.y, b.x);
+    PutHLine(a.x, b.y, b.x);
+    while (!q.empty()) {
+        auto p = q.front();
+        PutPixel(p.x, p.y);
+        q.pop();
     }
 }
 
@@ -72,9 +80,29 @@ void Rectangle::HardwareRender()
 
 bool Rectangle::OnClick(int x, int y)
 {
-    // determinar la distancia del click a la línea
-    // si es mejor a un umbral (e.g. 3 píxeles) entonces
-    // retornas true
+    if (m_filled) {
+        Vec2 a = {
+            std::min(m_coords.a.x, m_coords.b.x),
+            std::min(m_coords.a.y, m_coords.b.y)
+        };
+
+        Vec2 b = {
+            std::max(m_coords.a.x, m_coords.b.x),
+            std::max(m_coords.a.y, m_coords.b.y)
+        };
+        return a.x <= x and b.x >= x and a.y <= y and b.y >= y;
+    }
+
+    std::array<Line, 4> lines;
+    lines[0].Set(m_coords.a.x, m_coords.a.y, m_coords.a.x, m_coords.b.y);
+    lines[1].Set(m_coords.a.x, m_coords.b.y, m_coords.b.x, m_coords.b.y);
+    lines[2].Set(m_coords.b.x, m_coords.b.y, m_coords.b.x, m_coords.a.y);
+    lines[3].Set(m_coords.a.x, m_coords.a.y, m_coords.b.x, m_coords.a.y);
+
+    for (auto &l : lines) {
+        if (l.OnClick(x, y))
+        return true;
+    }
     return false;
 }
 

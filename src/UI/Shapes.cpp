@@ -120,7 +120,7 @@ void Shape::ui(bool allowFiller)
 
 void Line::ui(bool allowFiller)
 {
-    Shape::ui(true);
+    Shape::ui(false);
 
     ImGuiIO& io = ImGui::GetIO();
     int w = (GLsizei)io.DisplaySize.x;

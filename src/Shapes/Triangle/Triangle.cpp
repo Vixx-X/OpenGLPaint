@@ -23,13 +23,19 @@ std::vector<std::reference_wrapper<float>> Triangle::GetVertex()
 
 void Triangle::RenderInside()
 {
-    float y1 = m_coords[0].y;
-    float y2 = m_coords[1].y;
-    float y3 = m_coords[2].y;
+    std::array<Vec2,3> aux = m_coords;
 
-    float x1 = m_coords[0].x;
-    float x2 = m_coords[1].x;
-    float x3 = m_coords[2].x;
+    if ((aux[1].x - aux[0].x)*(aux[2].y - aux[0].y) -
+        (aux[1].y - aux[0].y)*(aux[2].x - aux[0].x) > 0)
+        std::swap(aux[0], aux[2]);
+
+    float y1 = aux[0].y;
+    float y2 = aux[1].y;
+    float y3 = aux[2].y;
+
+    float x1 = aux[0].x;
+    float x2 = aux[1].x;
+    float x3 = aux[2].x;
 
     // Deltas
     float Dx12 = x1 - x2;
@@ -59,18 +65,16 @@ void Triangle::RenderInside()
     for(int y = miny; y < maxy; y++) {
         // Start value for horizontal scan
         float Cx1 = Cy1, Cx2 = Cy2, Cx3 = Cy3;
-
-        for(int x = minx; x < maxx; x++) {
-
-            if (Cx1 > 0 and Cx2 > 0 and Cx3 > 0) {
+        for(int x = minx; x < maxx; x++)
+        {
+            if (Cx1 > 0 and Cx2 > 0 and Cx3 > 0)
+            {
                 SetFillColorPixel();
                 PutPixel(x, y);
                 SetColorPixel();
             }
-
             Cx1 -= Dy12, Cx2 -= Dy23, Cx3 -= Dy31;
         }
-
         Cy1 += Dx12, Cy2 += Dx23, Cy3 += Dx31;
     }
 }
@@ -112,19 +116,44 @@ void Triangle::HardwareRender()
     glEnd();
 }
 
+float Area(Vec2 p1, Vec2 p2, Vec2 p3)
+{
+    return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+}
+
 bool Triangle::OnClick(int x, int y)
 {
-    // determinar la distancia del click a la línea
-    // si es mejor a un umbral (e.g. 3 píxeles) entonces
-    // retornas true
+    if (m_filled) {
+        float d1, d2, d3;
+        bool has_neg, has_pos;
+
+        d1 = Area({(float)x, (float)y}, m_coords[0], m_coords[1]);
+        d2 = Area({(float)x, (float)y}, m_coords[1], m_coords[2]);
+        d3 = Area({(float)x, (float)y}, m_coords[2], m_coords[0]);
+
+        has_neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+        has_pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+
+        if (!(has_neg and has_pos))
+            return true;
+    }
+
+    int M = m_coords.size();
+    for (int i=0; i<M; ++i) {
+        Line l(m_border_color.r, m_border_color.g, m_border_color.b);
+        l.Set(m_coords[i].x, m_coords[i].y,
+              m_coords[(i + 1)%M].x, m_coords[(i + 1)%M].y);
+        if (l.OnClick(x, y))
+            return true;
+    }
     return false;
 }
 
 void Triangle::OnMove(int x, int y)
 {
-    m_coords[0].x += x, m_coords[0].y = y;
-    m_coords[1].x += x, m_coords[1].y = y;
-    m_coords[2].x += x, m_coords[2].y = y;
+    m_coords[0].x += x, m_coords[0].y += y;
+    m_coords[1].x += x, m_coords[1].y += y;
+    m_coords[2].x += x, m_coords[2].y += y;
 }
 
 void Triangle::Center(int w, int h)

@@ -206,7 +206,7 @@ namespace GLPaint
         int h = (GLsizei)io.DisplaySize.y;
         if (!io.WantCaptureMouse) {
             if (canvas.Hover(x, h - y) or (gizmo and gizmo->Hover(x, h - y))) {
-                /* std::cout << "YES\n"; */
+                std::cout << "YES\n";
                 // HOVER
                 if (ImGui::IsMouseDown(0)) {
                     SetCustomCursor(ImGuiMouseCursor_ResizeAll);
@@ -214,7 +214,7 @@ namespace GLPaint
                     SetCustomCursor(ImGuiMouseCursor_Hand);
                 }
             } else {
-                /* std::cout << "NO\n"; */
+                std::cout << "NO\n";
                 // DEFAULT
                 SetCustomCursor(ImGuiMouseCursor_Arrow);
             }

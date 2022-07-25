@@ -1,7 +1,6 @@
 #include "Bezier.h"
 #include <iostream>
 #include <sstream>
-#include "../Line/Line.h"
 
 void Bezier::Set(std::vector<Vec2> new_coords)
 {
@@ -36,6 +35,7 @@ Vec2 DeCasteljau(float t, std::vector<Vec2> coefs)
 void Bezier::Render()
 {
     std::vector<Vec2> points;
+    m_lines.clear();
     for (int t=0; t<=m_sample; ++t) {
         points.push_back(DeCasteljau(t*1.0f/m_sample, m_coords));
     }
@@ -44,6 +44,7 @@ void Bezier::Render()
         Line l(m_border_color.r, m_border_color.g, m_border_color.g);
         l.Set(points[i-1].x, points[i-1].y, points[i].x, points[i].y);
         l.Render();
+        m_lines.push_back(l);
     }
 }
 
@@ -62,9 +63,10 @@ void Bezier::HardwareRender()
 
 bool Bezier::OnClick(int x, int y)
 {
-    // determinar la distancia del click a la línea
-    // si es mejor a un umbral (e.g. 3 píxeles) entonces
-    // retornas true
+    for (auto &l : m_lines) {
+        if (l.OnClick(x, y))
+            return true;
+    }
     return false;
 }
 

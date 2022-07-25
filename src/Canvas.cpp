@@ -114,7 +114,8 @@ namespace GLPaint
 
     void Canvas::Render()
     {
-        for (auto &p : m_primitives) {
+        for (int i=m_primitives.size()-1; ~i; --i) {
+            auto &p = m_primitives[i];
             if (m_hardware_acc) {
                 p->HardwareRender();
             } else {

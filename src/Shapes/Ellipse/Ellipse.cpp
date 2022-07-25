@@ -1,6 +1,7 @@
 #include "Ellipse.h"
 #include <iostream>
 #include <sstream>
+#include <queue>
 
 void Ellipse::Set(int x0, int y0, int x1, int y1)
 {
@@ -18,6 +19,8 @@ std::vector<std::reference_wrapper<float>> Ellipse::GetVertex()
 
 void Ellipse::Render()
 {
+    std::queue<Vec2> q;
+
     float xc = (m_coords.a.x + m_coords.b.x)/2;
     float yc = (m_coords.a.y + m_coords.b.y)/2;
     float rx = std::abs(m_coords.a.x - m_coords.b.x)/2;
@@ -42,10 +45,10 @@ void Ellipse::Render()
             PutHLine(-x + xc, -y + yc, x + xc);
             SetColorPixel();
         }
-        PutPixel(x + xc,   y + yc);
-        PutPixel(-x + xc,  y + yc);
-        PutPixel(x + xc,  -y + yc);
-        PutPixel(-x + xc, -y + yc);
+        q.push({ x + xc,  y + yc});
+        q.push({-x + xc,  y + yc});
+        q.push({ x + xc, -y + yc});
+        q.push({-x + xc, -y + yc});
 
         // Checking and updating value of
         // decision parameter based on algorithm
@@ -74,10 +77,10 @@ void Ellipse::Render()
             PutHLine(-x + xc, -y + yc, x + xc);
             SetColorPixel();
         }
-        PutPixel(x + xc,   y + yc);
-        PutPixel(-x + xc,  y + yc);
-        PutPixel(x + xc,  -y + yc);
-        PutPixel(-x + xc, -y + yc);
+        q.push({ x + xc,  y + yc});
+        q.push({-x + xc,  y + yc});
+        q.push({ x + xc, -y + yc});
+        q.push({-x + xc, -y + yc});
 
         // Checking and updating parameter
         // value based on algorithm
@@ -92,6 +95,13 @@ void Ellipse::Render()
             d2 = d2 + dx - dy + (rx * rx);
         }
     }
+
+    SetColorPixel();
+    while (!q.empty()) {
+        auto p = q.front();
+        PutPixel(p.x, p.y);
+        q.pop();
+    }
 }
 
 void Ellipse::HardwareRender()
@@ -101,10 +111,21 @@ void Ellipse::HardwareRender()
 
 bool Ellipse::OnClick(int x, int y)
 {
-    // determinar la distancia del click a la línea
-    // si es mejor a un umbral (e.g. 3 píxeles) entonces
-    // retornas true
-    return false;
+    float h = (m_coords.a.x + m_coords.b.x)/2;
+    float k = (m_coords.a.y + m_coords.b.y)/2;
+    float rx = std::abs(m_coords.a.x - m_coords.b.x)/2;
+    float ry = std::abs(m_coords.a.y - m_coords.b.y)/2;
+
+    float xh = x - h;
+    float yk = y - k;
+
+    float res = xh*xh/(rx*rx) + yk*yk/(ry*ry);
+
+    if (m_filled) {
+        return res <= 1;
+    }
+
+    return std::abs(res - 1) <= 0.1;
 }
 
 void Ellipse::OnMove(int x, int y)

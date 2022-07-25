@@ -26,12 +26,13 @@ project "OpenGLPaint"
 
     files { "src/**.cpp", "src/**.h" }
 
-    libdirs { "vendor/freeglut/lib", os.findlib("X11") }
+    libdirs { "vendor/freeglut/lib" }
 
-    links {"glut", "GL", "ImGui", "X11", "Xext", "Xxf86vm", "Xrandr", "Xcursor", "Xinerama", "Xi" }
+    links {"glut", "GL", "ImGui" }
 
     filter "system:linux"
-        links { "dl", "pthread" }
+        links { "dl", "pthread", "X11", "Xext", "Xxf86vm", "Xrandr", "Xcursor", "Xinerama", "Xi" }
+        libdirs { os.findlib("X11") }
 
         defines { "_X11" }
 

@@ -43,6 +43,7 @@ namespace GLPaint
         bool IsSelected();
         void Unselect();
         void Select(int x, int y);
+        bool Hover(int x, int y);
         Shape * &GetSelected();
 
         void Delete();

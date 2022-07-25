@@ -123,7 +123,6 @@ namespace GLPaint
         }
     }
 
-
     bool Canvas::IsSelected()
     {
         return m_idx != -1;
@@ -144,6 +143,15 @@ namespace GLPaint
             }
         }
         Unselect();
+    }
+
+    bool Canvas::Hover(int x, int y)
+    {
+        for (int idx=m_primitives.size() - 1; ~idx; --idx) {
+            auto p = m_primitives[idx];
+            if (p->OnClick(x, y)) return true;
+        }
+        return false;
     }
 
     Shape * &Canvas::GetSelected()

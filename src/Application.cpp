@@ -190,11 +190,42 @@ namespace GLPaint
         }
     }
 
+    void SetCustomCursor(int type)
+    {
+        // software
+        if (type != ImGui::GetMouseCursor()) {
+            ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeAll);
+        }
+    }
+
+    void HandlingMoutionEvent(int x, int y)
+    {
+        ImGui_ImplGLUT_MotionFunc(x, y);
+
+        ImGuiIO& io = ImGui::GetIO();
+        int h = (GLsizei)io.DisplaySize.y;
+        if (!io.WantCaptureMouse) {
+            if (canvas.Hover(x, h - y) or (gizmo and gizmo->Hover(x, h - y))) {
+                /* std::cout << "YES\n"; */
+                // HOVER
+                if (ImGui::IsMouseDown(0)) {
+                    SetCustomCursor(ImGuiMouseCursor_ResizeAll);
+                } else {
+                    SetCustomCursor(ImGuiMouseCursor_Hand);
+                }
+            } else {
+                /* std::cout << "NO\n"; */
+                // DEFAULT
+                SetCustomCursor(ImGuiMouseCursor_Arrow);
+            }
+        }
+    }
+
     void ImGui_ImplGLUT_InstallCustomFuncs()
     {
         glutReshapeFunc(ImGui_ImplGLUT_ReshapeFunc);
-        glutMotionFunc(ImGui_ImplGLUT_MotionFunc);
-        glutPassiveMotionFunc(ImGui_ImplGLUT_MotionFunc);
+        glutMotionFunc(HandlingMoutionEvent);
+        glutPassiveMotionFunc(HandlingMoutionEvent);
         glutMouseFunc(HandlingMouseEvent);
 #ifdef __FREEGLUT_EXT_H__
         glutMouseWheelFunc(ImGui_ImplGLUT_MouseWheelFunc);

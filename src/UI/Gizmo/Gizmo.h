@@ -28,13 +28,14 @@ class Gizmo
 
         Gizmo(Shape * s, Vec4* color, float* m_circle_size)
             : shape(s), IsEditing(false), m_editing_idx(-1),
-            m_circle_size(m_circle_size), m_color(color) {}
+            m_circle_size(m_circle_size), m_color(color), m_prev{-1, -1} {}
 
         ~Gizmo() = default;
 
         void PutCircle(float x, float y);
 
         bool Select(float x, float y);
+        bool Hover(float x, float y);
 
         void Render();
 };

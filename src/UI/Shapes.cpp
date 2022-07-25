@@ -70,15 +70,10 @@ namespace GLPaint::UI {
         auto p = canvas.GetSelected();
         p->ui();
 
-        if (ImGui::Button("Center")) {
-            ImGuiIO& io = ImGui::GetIO();
-            int w = (GLsizei)io.DisplaySize.x;
-            int h = (GLsizei)io.DisplaySize.y;
-            p->Center(w, h);
-        }
         if (ImGui::Button("Send Foreground")) {
             canvas.Foreground();
         }
+        ImGui::SameLine();
         if (ImGui::Button("Send Background")) {
             canvas.Background();
         }
@@ -108,6 +103,14 @@ void Shape::ui(bool allowFiller)
 {
     if (allowFiller) {
         ImGui::Checkbox("Fill", &m_filled);
+        ImGui::SameLine();
+    }
+
+    if (ImGui::Button("Center")) {
+        ImGuiIO& io = ImGui::GetIO();
+        int w = (GLsizei)io.DisplaySize.x;
+        int h = (GLsizei)io.DisplaySize.y;
+        this->Center(w, h);
     }
 
     ImGui::ColorEdit3(
@@ -215,6 +218,23 @@ void Bezier::ui(bool allowFiller)
     int h = (GLsizei)io.DisplaySize.y;
 
     int N = m_size;
+
+    if (ImGui::Button("-")) {
+        SetSize(N-1);
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::SliderInt("##NCoord", &N, 2, 10)) {
+        SetSize(N);
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::Button("+")) {
+        SetSize(N+1);
+    }
+
     for (int i=0; i<N; ++i) {
         std::string xLabel = "X" + std::to_string(i);
         ImGui::SliderFloat(xLabel.c_str(), &m_coords[i].x, 0.00f, w);
@@ -222,11 +242,4 @@ void Bezier::ui(bool allowFiller)
         ImGui::SliderFloat(yLabel.c_str(), &m_coords[i].y, 0.00f, h);
     }
 
-    if (ImGui::Button("-")) {
-        SetSize(N-1);
-    }
-
-    if (ImGui::Button("+")) {
-        SetSize(N+1);
-    }
 }

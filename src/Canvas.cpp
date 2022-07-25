@@ -24,6 +24,8 @@ namespace GLPaint
         Shape * shape = nullptr;
         if (Shapes::GetPrimitive(primitive_name, shape)) {
             shape->Center(m_W, m_H);
+            shape->SetColor(m_border_color.r, m_border_color.g, m_border_color.g);
+            shape->SetFillColor(m_filler_color.r, m_filler_color.g, m_filler_color.g);
             AddPrimitive(*shape);
             m_idx = m_primitives.size() - 1;
         }
@@ -114,8 +116,7 @@ namespace GLPaint
 
     void Canvas::Render()
     {
-        for (int i=m_primitives.size()-1; ~i; --i) {
-            auto &p = m_primitives[i];
+        for (auto &p : m_primitives) {
             if (m_hardware_acc) {
                 p->HardwareRender();
             } else {

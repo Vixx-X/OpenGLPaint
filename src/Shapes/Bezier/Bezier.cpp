@@ -1,6 +1,7 @@
 #include "Bezier.h"
 #include <iostream>
 #include <sstream>
+#include <stdlib.h>
 
 void Bezier::Set(std::vector<Vec2> new_coords)
 {
@@ -20,6 +21,8 @@ std::vector<std::reference_wrapper<float>> Bezier::GetVertex()
 void Bezier::SetSize(size_t N)
 {
     m_coords.resize(N, m_coords[m_size-1]);
+    m_coords[N - 1].x += rand() % 100 - 50;
+    m_coords[N - 1].y += rand() % 100 - 50;
     m_size = N;
 }
 

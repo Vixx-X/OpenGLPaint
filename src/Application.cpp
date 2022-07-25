@@ -128,11 +128,17 @@ namespace GLPaint
                     break;
                 case 'c':
                     // change border color
-                    if (canvas.IsSelected()) {}
+                    if (canvas.IsSelected()) {
+                        auto c = canvas.m_border_color;
+                        canvas.GetSelected()->SetColor(c.r, c.g, c.g);
+                    }
                     break;
                 case 'r':
                     // change filler color
-                    if (canvas.IsSelected()) {}
+                    if (canvas.IsSelected()) {
+                        auto c = canvas.m_filler_color;
+                        canvas.GetSelected()->SetFillColor(c.r, c.g, c.g);
+                    }
                     break;
                 case 'h':
                     // toggle hardware acc

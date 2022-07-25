@@ -60,7 +60,6 @@ class Shape
 
         virtual std::string to_string() const;
         operator std::string() const;
-
 };
 
 std::ostream& operator <<(std::ostream& os, Shape *& shape);

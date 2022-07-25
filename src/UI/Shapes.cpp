@@ -7,9 +7,9 @@ namespace GLPaint::UI {
     void ShapeTable(Canvas &canvas)
     {
         if (canvas.m_primitives.size() and
-            ImGui::BeginTable("ShapesTable", 1,
-            ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders
-            | ImGuiTableFlags_RowBg))
+                ImGui::BeginTable("ShapesTable", 1,
+                    ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders
+                    | ImGuiTableFlags_RowBg))
         {
             int &curr_idx = canvas.m_idx;
             for (int n = canvas.m_primitives.size()-1; ~n; --n)
@@ -185,26 +185,6 @@ void Ellipse::ui(bool allowFiller)
 void Circle::ui(bool allowFiller)
 {
     Ellipse::ui(true);
-/*     Shape::ui(true); */
-
-/*     float x, y, r; */
-/*     x = (m_coords.x + m_coords.z) / 2; */
-/*     y = (m_coords.y + m_coords.w) / 2; */
-/*     r = std::max((m_coords.x - m_coords.z), (m_coords.y - m_coords.w))/ 2; */
-
-/*     ImGuiIO& io = ImGui::GetIO(); */
-/*     int w = (GLsizei)io.DisplaySize.x; */
-/*     int h = (GLsizei)io.DisplaySize.y; */
-
-/*     ImGui::SliderFloat("X", &x, 0.00f, w); */
-/*     ImGui::SliderFloat("Y", &y, 0.00f, h); */
-
-/*     ImGui::SliderFloat("R", &r, 1.0f, 100.0f); */
-
-/*     m_coords.x = x - r; */
-/*     m_coords.z = x + r; */
-/*     m_coords.y = y - r; */
-/*     m_coords.w = y + r; */
 }
 
 void Bezier::ui(bool allowFiller)

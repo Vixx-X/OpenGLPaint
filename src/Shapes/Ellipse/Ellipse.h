@@ -15,7 +15,7 @@ class Ellipse : public Shape
         void Set(int x0, int y0, int x1, int y1);
         virtual std::vector<std::reference_wrapper<float>> GetVertex() override;
 
-        void Render() override;
+        virtual void Render() override;
         void HardwareRender() override;
 
         bool OnClick(int x, int y) override;

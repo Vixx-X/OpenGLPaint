@@ -8,6 +8,7 @@ namespace GLPaint
     static Gizmo* gizmo;
     static ImGuiDockNodeFlags dockspace_flags =
         ImGuiDockNodeFlags_PassthruCentralNode;
+    static bool showDemo = false;
 
     void RenderUI()
     {
@@ -23,7 +24,8 @@ namespace GLPaint
         }
         ImGui::PopID();
 
-        ImGui::ShowDemoWindow(NULL);
+        if (showDemo)
+            ImGui::ShowDemoWindow(NULL);
 
         UI::RenderMenuBar(canvas);
         UI::RenderPalette(canvas);
@@ -88,7 +90,7 @@ namespace GLPaint
         ImGui_ImplGLUT_KeyboardFunc(key, x, y); // calling ImGui handler
 
         ImGuiIO& io = ImGui::GetIO();
-        if (!io.WantCaptureKeyboard) {
+        if (!io.WantCaptureKeyboard or 1) { // this should be ok, but GLUT :(
             switch(key) {
                 case '1':
                     // Line
@@ -114,11 +116,15 @@ namespace GLPaint
                     // Bezier3
                     canvas.AddPrimitive("Bezier3");
                     break;
+                case ' ':
+                    // Show demo
+                    showDemo != showDemo;
+                    break;
                 case 's':
                     // save
                     canvas.Save();
                     break;
-                case 'L':
+                case 'l':
                     // load
                     canvas.Load();
                     break;
@@ -198,9 +204,22 @@ namespace GLPaint
 
     void SetCustomCursor(int type)
     {
-        // software
         if (type != ImGui::GetMouseCursor()) {
-            ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeAll);
+            // software
+            ImGui::SetMouseCursor(type);
+
+            // hardware
+            switch (type)
+            {
+                case ImGuiMouseCursor_ResizeAll:
+                    glutSetCursor(GLUT_CURSOR_INFO);
+                    break;
+                case ImGuiMouseCursor_Hand:
+                    glutSetCursor(GLUT_CURSOR_CROSSHAIR);
+                    break;
+                default:
+                    glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+            }
         }
     }
 
@@ -211,8 +230,8 @@ namespace GLPaint
         ImGuiIO& io = ImGui::GetIO();
         int h = (GLsizei)io.DisplaySize.y;
         if (!io.WantCaptureMouse) {
-            if (canvas.Hover(x, h - y) or (gizmo and gizmo->Hover(x, h - y))) {
-                std::cout << "YES\n";
+            if (canvas.Hover(x, h - y) or (gizmo and
+                        (gizmo->Hover(x, h - y) or gizmo->IsEditing))) {
                 // HOVER
                 if (ImGui::IsMouseDown(0)) {
                     SetCustomCursor(ImGuiMouseCursor_ResizeAll);
@@ -220,7 +239,6 @@ namespace GLPaint
                     SetCustomCursor(ImGuiMouseCursor_Hand);
                 }
             } else {
-                std::cout << "NO\n";
                 // DEFAULT
                 SetCustomCursor(ImGuiMouseCursor_Arrow);
             }

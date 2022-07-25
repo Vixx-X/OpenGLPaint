@@ -5,7 +5,6 @@
 class Circle : public Ellipse
 {
     public:
-
         Circle() : Ellipse() { }
         Circle(float r, float g, float b) : Ellipse(r, g, b) { }
 

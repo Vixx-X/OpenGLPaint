@@ -3,6 +3,7 @@
 #include "../Shape.h"
 #include "../Line/Line.h"
 #include <vector>
+#include <map>
 
 class Bezier : public Shape
 {
@@ -10,7 +11,7 @@ class Bezier : public Shape
         size_t m_size;
         int m_sample;
         std::vector<Vec2> m_coords;
-        std::vector<Line> m_lines;
+        std::map<float, Line> m_lines;
 
     public:
 

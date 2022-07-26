@@ -47,7 +47,8 @@ void Bezier::Render()
         Line l(m_border_color.r, m_border_color.g, m_border_color.g);
         l.Set(points[i-1].x, points[i-1].y, points[i].x, points[i].y);
         l.Render();
-        m_lines.push_back(l);
+        float x = std::min(points[i-1].x, points[i].x);
+        m_lines.insert({x, l});
     }
 }
 
@@ -66,8 +67,10 @@ void Bezier::HardwareRender()
 
 bool Bezier::OnClick(int x, int y)
 {
-    for (auto &l : m_lines) {
-        if (l.OnClick(x, y))
+    auto low = m_lines.lower_bound(x-3), upper = m_lines.lower_bound(x + 3);
+    std::map<float, Line>::iterator it;
+    for (it = low; it != upper; ++it) {
+        if (it->second.OnClick(x, y))
             return true;
     }
     return false;

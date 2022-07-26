@@ -242,6 +242,9 @@ namespace GLPaint
                 // DEFAULT
                 SetCustomCursor(ImGuiMouseCursor_Arrow);
             }
+        } else {
+            // DEFAULT
+            SetCustomCursor(ImGuiMouseCursor_Arrow);
         }
     }
 

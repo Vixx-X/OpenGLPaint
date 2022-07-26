@@ -16,7 +16,7 @@ ifeq ($(config),debug)
   TARGET = $(TARGETDIR)/libImGui.a
   OBJDIR = ../obj/Debug/Debug/ImGui
   DEFINES += -DDEBUG -DDEBUG_SHADER -D_IMGUI_X11
-  INCLUDES += -Iimgui -Iimgui/backends -Itinyfiledialogs
+  INCLUDES += -Iimgui -Iimgui/backends -Ifreeglut/include -Itinyfiledialogs
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
@@ -24,7 +24,7 @@ ifeq ($(config),debug)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS +=
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
+  ALL_LDFLAGS += $(LDFLAGS) -Lvendor/freeglut/lib -L/usr/lib64 -m64
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef
@@ -43,7 +43,7 @@ ifeq ($(config),release)
   TARGET = $(TARGETDIR)/libImGui.a
   OBJDIR = ../obj/Release/Release/ImGui
   DEFINES += -DRELEASE -D_IMGUI_X11
-  INCLUDES += -Iimgui -Iimgui/backends -Itinyfiledialogs
+  INCLUDES += -Iimgui -Iimgui/backends -Ifreeglut/include -Itinyfiledialogs
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -flto -O2 -fPIC
@@ -51,7 +51,7 @@ ifeq ($(config),release)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS +=
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -flto -s
+  ALL_LDFLAGS += $(LDFLAGS) -Lvendor/freeglut/lib -L/usr/lib64 -m64 -flto -s
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef

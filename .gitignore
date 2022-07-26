@@ -25,7 +25,8 @@
 *.la
 *.a
 *.lib
-!vendor/**
+!vendor/freeglut
+!vendor/bin/**
 
 # Executables
 *.exe

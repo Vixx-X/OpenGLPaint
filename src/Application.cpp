@@ -229,18 +229,13 @@ namespace GLPaint
 
         ImGuiIO& io = ImGui::GetIO();
         int h = (GLsizei)io.DisplaySize.y;
-        if (!io.WantCaptureMouse) {
-            if (canvas.Hover(x, h - y) or (gizmo and
-                        (gizmo->Hover(x, h - y) or gizmo->IsEditing))) {
-                // HOVER
-                if (ImGui::IsMouseDown(0)) {
-                    SetCustomCursor(ImGuiMouseCursor_ResizeAll);
-                } else {
-                    SetCustomCursor(ImGuiMouseCursor_Hand);
-                }
+        if (!io.WantCaptureMouse and (canvas.Hover(x, h - y) or (gizmo and
+                        (gizmo->Hover(x, h - y) or gizmo->IsEditing)))) {
+            // HOVER
+            if (ImGui::IsMouseDown(0)) {
+                SetCustomCursor(ImGuiMouseCursor_ResizeAll);
             } else {
-                // DEFAULT
-                SetCustomCursor(ImGuiMouseCursor_Arrow);
+                SetCustomCursor(ImGuiMouseCursor_Hand);
             }
         } else {
             // DEFAULT

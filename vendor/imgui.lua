@@ -1,45 +1,47 @@
 project "ImGui"
-	kind "StaticLib"
-	language "C++"
-	architecture "x86_64"
+    kind "StaticLib"
+    language "C++"
+    architecture "x86_64"
 
-	targetdir "../bin/%{cfg.buildcfg}"
-	objdir "../obj/%{cfg.buildcfg}"
+    targetdir "../bin/%{cfg.buildcfg}"
+    objdir "../obj/%{cfg.buildcfg}"
 
-	includedirs { "imgui/", "imgui/backends/", "freeglut/include" }
+    includedirs { "imgui/", "imgui/backends/", "freeglut/include" }
 
-	files
-	{
-		"imgui/*.cpp",
-		"imgui/backends/imgui_impl_glut.cpp",
-		"imgui/backends/imgui_impl_opengl2.cpp",
-	}
+    libdirs { "vendor/freeglut/lib" }
 
-	filter "system:linux"
-		pic "On"
+    files
+    {
+        "imgui/*.cpp",
+        "imgui/backends/imgui_impl_glut.cpp",
+        "imgui/backends/imgui_impl_opengl2.cpp",
+    }
 
-		systemversion "latest"
-		staticruntime "On"
+    filter "system:linux"
+        pic "On"
 
-		defines
-		{
-			"_IMGUI_X11"
-		}
+        systemversion "latest"
+        staticruntime "On"
 
-	filter "system:windows"
-		systemversion "latest"
-		staticruntime "On"
+        defines
+        {
+            "_IMGUI_X11"
+        }
 
-		defines
-		{
-			"_IMGUI_WIN32",
-			"_CRT_SECURE_NO_WARNINGS"
-		}
+    filter "system:windows"
+        systemversion "latest"
+        staticruntime "On"
 
-	filter "configurations:Debug"
-		runtime "Debug"
-		symbols "on"
+        defines
+        {
+            "_IMGUI_WIN32",
+            "_CRT_SECURE_NO_WARNINGS"
+        }
 
-	filter "configurations:Release"
-		runtime "Release"
-		optimize "on"
+    filter "configurations:Debug"
+        runtime "Debug"
+        symbols "on"
+
+    filter "configurations:Release"
+        runtime "Release"
+        optimize "on"

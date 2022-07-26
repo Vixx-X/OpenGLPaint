@@ -22,13 +22,13 @@ project "OpenGLPaint"
     targetdir "bin/%{cfg.buildcfg}"
     objdir "obj/%{cfg.buildcfg}"
 
-    includedirs { "src", "vendor/freeglut/include", "vendor/imgui", "vendor/imgui/backends", "vendor/imgui/examples", "vendor/tinyfiledialogs" }
+    includedirs { "src", "vendor/freeglut/include", "vendor/imgui", "vendor/imgui/backends", "vendor/tinyfiledialogs" }
 
     files { "src/**.cpp", "src/**.h" }
 
     libdirs { "vendor/freeglut/lib" }
 
-    links {"glut", "GL", "ImGui" }
+    links { "glut", "GL", "ImGui" }
 
     filter "system:linux"
         links { "dl", "pthread", "X11", "Xext", "Xxf86vm", "Xrandr", "Xcursor", "Xinerama", "Xi" }

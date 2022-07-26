@@ -6,7 +6,7 @@ project "ImGui"
     targetdir "../bin/%{cfg.buildcfg}"
     objdir "../obj/%{cfg.buildcfg}"
 
-    includedirs { "imgui/", "imgui/backends/", "freeglut/include" }
+    includedirs { "imgui/", "freeglut/include" }
 
     libdirs { "vendor/freeglut/lib" }
 
@@ -16,6 +16,8 @@ project "ImGui"
         "imgui/backends/imgui_impl_glut.cpp",
         "imgui/backends/imgui_impl_opengl2.cpp",
     }
+
+    links { "glut", "GL" }
 
     filter "system:linux"
         pic "On"

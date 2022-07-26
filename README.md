@@ -1,6 +1,6 @@
 # OpenGLPaint
 
-![image](https://user-images.githubusercontent.com/40926097/181039769-3dc44151-1fb0-4840-9e8a-0ebf346ea935.png)
+![image](https://user-images.githubusercontent.com/40926097/181039961-3f4dfddb-212d-4678-84b8-0853e334eeca.png)
 
 ## Window
 

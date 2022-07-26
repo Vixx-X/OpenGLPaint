@@ -2,7 +2,7 @@ workspace "OpenGLPaint"
     configurations { "Debug", "Release" }
     startproject "OpenGLPaint"
 
-    flags { "MultiProcessorCompile" }
+    flags { "MultiProcessorCompile", "ConformanceMode" }
 
     filter "configurations:Debug"
         defines { "DEBUG", "DEBUG_SHADER" }

@@ -2,31 +2,36 @@
 
 #include "../Shape.h"
 
-class Line : public Shape
+namespace GLPaint::Shapes
 {
-    private:
-        Vec4 m_coords;
 
-    public:
+    class Line : public Shape
+    {
+        private:
+            Vec4 m_coords;
 
-        Line() : Shape() { }
-        Line(float r, float g, float b) : Shape(r, g, b) { }
+        public:
 
-        void Set(int x0, int y0, int x1, int y1);
-        std::vector<std::reference_wrapper<float>> GetVertex() override;
-        Vec4 &GetCoords();
+            Line() : Shape() { }
+            Line(float r, float g, float b) : Shape(r, g, b) { }
 
-        void Render() override;
-        void HardwareRender() override;
+            void Set(int x0, int y0, int x1, int y1);
+            std::vector<std::reference_wrapper<float>> GetVertex() override;
+            Vec4 &GetCoords();
 
-        bool OnClick(int x, int y) override;
-        void OnMove(int x, int y) override;
-        void Center(int w, int h) override;
+            void Render() override;
+            void HardwareRender() override;
 
-        std::ostream& Write(std::ostream& os) const override;
-        std::istream& Read(std::istream& is) override;
+            bool OnClick(int x, int y) override;
+            void OnMove(int x, int y) override;
+            void Center(int w, int h) override;
 
-        void ui(bool allowFiller = false) override;
+            std::ostream& Write(std::ostream& os) const override;
+            std::istream& Read(std::istream& is) override;
 
-        std::string to_string() const override;
-};
+            void ui(bool allowFiller = false) override;
+
+            std::string to_string() const override;
+    };
+
+}

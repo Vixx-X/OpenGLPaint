@@ -17,7 +17,7 @@ namespace GLPaint
         float m_D;
         Vec4 m_bg_color, m_gizmo_color;
         Vec3 m_border_color, m_filler_color;
-        std::vector<Shape*> m_primitives;
+        std::vector<Shapes::Shape*> m_primitives;
         bool m_hardware_acc;
         int m_idx;
         float m_psize, m_gizmo_psize;
@@ -34,7 +34,7 @@ namespace GLPaint
         void ToggleHardwareAcceleration();
         void SetBg(float r, float g, float b);
 
-        void AddPrimitive(Shape &primitive);
+        void AddPrimitive(Shapes::Shape &primitive);
         void AddPrimitive(std::string primitive_name);
         void Clear();
 
@@ -47,7 +47,7 @@ namespace GLPaint
         void Unselect();
         void Select(int x, int y);
         bool Hover(int x, int y);
-        Shape * &GetSelected();
+        Shapes::Shape * &GetSelected();
 
         void Delete();
 
@@ -56,7 +56,7 @@ namespace GLPaint
         void Up();
         void Down();
 
-        Shape * Pop();
+        Shapes::Shape * Pop();
 
     };
 }

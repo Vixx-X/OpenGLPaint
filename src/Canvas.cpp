@@ -14,14 +14,14 @@ namespace GLPaint
         m_hardware_acc = !m_hardware_acc;
     }
 
-    void Canvas::AddPrimitive(Shape &primitive)
+    void Canvas::AddPrimitive(Shapes::Shape &primitive)
     {
         m_primitives.push_back(&primitive);
     }
 
     void Canvas::AddPrimitive(std::string primitive_name)
     {
-        Shape * shape = nullptr;
+        Shapes::Shape * shape = nullptr;
         if (Shapes::GetPrimitive(primitive_name, shape)) {
             shape->Center(m_W, m_H);
             shape->SetColor(m_border_color.r, m_border_color.g, m_border_color.g);
@@ -86,7 +86,7 @@ namespace GLPaint
             int nLine = 0;
             while (getline(istrm, line)) {
                 std::stringstream sstr(line);
-                Shape* shape = nullptr;
+                Shapes::Shape* shape = nullptr;
 
                 nLine++;
                 sstr >> token;
@@ -156,12 +156,12 @@ namespace GLPaint
         return false;
     }
 
-    Shape * &Canvas::GetSelected()
+    Shapes::Shape * &Canvas::GetSelected()
     {
         return m_primitives[m_idx];
     }
 
-    Shape * Canvas::Pop()
+    Shapes::Shape * Canvas::Pop()
     {
         auto p = GetSelected();
         m_primitives.erase(m_primitives.begin() + m_idx);
@@ -171,7 +171,7 @@ namespace GLPaint
 
     void Canvas::Delete()
     {
-        Shape *p = Pop();
+        Shapes::Shape *p = Pop();
         delete p;
     }
 

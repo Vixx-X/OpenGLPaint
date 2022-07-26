@@ -3,30 +3,35 @@
 #include "../Shape.h"
 #include <array>
 
-class Triangle : public Shape
+namespace GLPaint::Shapes
 {
-    private:
-        std::array<Vec2, 3> m_coords;
 
-    public:
+    class Triangle : public Shape
+    {
+        private:
+            std::array<Vec2, 3> m_coords;
 
-        Triangle(float r, float g, float b) : Shape(r, g, b) { }
+        public:
 
-        void Set(int x0, int y0, int x1, int y1, int x2, int y2);
-        std::vector<std::reference_wrapper<float>> GetVertex() override;
+            Triangle(float r, float g, float b) : Shape(r, g, b) { }
 
-        void RenderInside();
-        void Render() override;
-        void HardwareRender() override;
+            void Set(int x0, int y0, int x1, int y1, int x2, int y2);
+            std::vector<std::reference_wrapper<float>> GetVertex() override;
 
-        bool OnClick(int x, int y) override;
-        void OnMove(int x, int y) override;
-        void Center(int w, int h) override;
+            void RenderInside();
+            void Render() override;
+            void HardwareRender() override;
 
-        std::ostream& Write(std::ostream& os) const override;
-        std::istream& Read(std::istream& is) override;
+            bool OnClick(int x, int y) override;
+            void OnMove(int x, int y) override;
+            void Center(int w, int h) override;
 
-        void ui(bool allowFiller = true) override;
+            std::ostream& Write(std::ostream& os) const override;
+            std::istream& Read(std::istream& is) override;
 
-        std::string to_string() const override;
-};
+            void ui(bool allowFiller = true) override;
+
+            std::string to_string() const override;
+    };
+
+}

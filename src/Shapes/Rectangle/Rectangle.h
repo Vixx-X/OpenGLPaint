@@ -2,29 +2,33 @@
 
 #include "../Shape.h"
 
-class Rectangle : public Shape
+namespace GLPaint::Shapes
 {
-    private:
-        Vec4 m_coords;
 
-    public:
+    class Rectangle : public Shape
+    {
+        private:
+            Vec4 m_coords;
 
-        Rectangle(float r, float g, float b) : Shape(r, g, b) { }
+        public:
 
-        void Set(int x0, int y0, int x1, int y1);
-        std::vector<std::reference_wrapper<float>> GetVertex() override;
+            Rectangle(float r, float g, float b) : Shape(r, g, b) { }
 
-        void Render() override;
-        void HardwareRender() override;
+            void Set(int x0, int y0, int x1, int y1);
+            std::vector<std::reference_wrapper<float>> GetVertex() override;
 
-        bool OnClick(int x, int y) override;
-        void OnMove(int x, int y) override;
-        void Center(int w, int h) override;
+            void Render() override;
+            void HardwareRender() override;
 
-        std::ostream& Write(std::ostream& os) const override;
-        std::istream& Read(std::istream& is) override;
+            bool OnClick(int x, int y) override;
+            void OnMove(int x, int y) override;
+            void Center(int w, int h) override;
 
-        void ui(bool allowFiller = true) override;
+            std::ostream& Write(std::ostream& os) const override;
+            std::istream& Read(std::istream& is) override;
 
-        std::string to_string() const override;
-};
+            void ui(bool allowFiller = true) override;
+
+            std::string to_string() const override;
+    };
+}

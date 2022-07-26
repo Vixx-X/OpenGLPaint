@@ -2,20 +2,25 @@
 
 #include "../Ellipse/Ellipse.h"
 
-class Circle : public Ellipse
+namespace GLPaint::Shapes
 {
-    public:
-        Circle() : Ellipse() { }
-        Circle(float r, float g, float b) : Ellipse(r, g, b) { }
 
-        std::vector<std::reference_wrapper<float>> GetVertex() override;
+    class Circle : public Ellipse
+    {
+        public:
+            Circle() : Ellipse() { }
+            Circle(float r, float g, float b) : Ellipse(r, g, b) { }
 
-        std::ostream& Write(std::ostream& os) const override;
-        std::istream& Read(std::istream& is) override;
+            std::vector<std::reference_wrapper<float>> GetVertex() override;
 
-        void Center(int w, int h) override;
+            std::ostream& Write(std::ostream& os) const override;
+            std::istream& Read(std::istream& is) override;
 
-        void ui(bool allowFiller = true) override;
+            void Center(int w, int h) override;
 
-        std::string to_string() const override;
-};
+            void ui(bool allowFiller = true) override;
+
+            std::string to_string() const override;
+    };
+
+}

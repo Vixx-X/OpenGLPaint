@@ -3,6 +3,9 @@
 #include <sstream>
 #include <stdlib.h>
 
+namespace GLPaint::Shapes
+{
+
 void Bezier::Set(std::vector<Vec2> new_coords)
 {
     m_coords = new_coords;
@@ -132,4 +135,6 @@ std::istream& Bezier::Read(std::istream& is)
     }
     is >> m_border_color.r >> m_border_color.g >> m_border_color.b;
     return is;
+}
+
 }

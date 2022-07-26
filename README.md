@@ -1,5 +1,7 @@
 # OpenGLPaint
 
+![image](https://user-images.githubusercontent.com/40926097/181039961-3f4dfddb-212d-4678-84b8-0853e334eeca.png)
+
 ## Window
 
 Run premake

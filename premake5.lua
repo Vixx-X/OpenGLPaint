@@ -1,8 +1,11 @@
+require('vstudio')
+
 workspace "OpenGLPaint"
     configurations { "Debug", "Release" }
     startproject "OpenGLPaint"
 
-    flags { "MultiProcessorCompile", "ConformanceMode" }
+    flags { "MultiProcessorCompile" }
+    conformancemode "true"
 
     filter "configurations:Debug"
         defines { "DEBUG", "DEBUG_SHADER" }

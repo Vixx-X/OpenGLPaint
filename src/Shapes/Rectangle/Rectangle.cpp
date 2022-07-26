@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <queue>
+#include <array>
 
 namespace GLPaint::Shapes
 {

@@ -1,4 +1,4 @@
-project "ImGui"
+project "tinyfiledialogs"
 	kind "StaticLib"
 	language "C"
 	architecture "x86_64"

@@ -1,21 +1,20 @@
-project "ImGui"
+project "freeglut"
     kind "StaticLib"
-    language "C++"
+    language "C"
     architecture "x86_64"
 
     targetdir "../bin/%{cfg.buildcfg}"
     objdir "../obj/%{cfg.buildcfg}"
 
-    includedirs { "imgui/", "freeglut/include" }
+    includedirs { "freeglut/include", "freeglut/src" }
 
     files
     {
-        "imgui/*.cpp",
-        "imgui/backends/imgui_impl_glut.cpp",
-        "imgui/backends/imgui_impl_opengl2.cpp",
+        "freeglut/src/*.c",
+        "freeglut/src/util/*.c",
     }
 
-    links { "freeglut", "GL" }
+    links { "GL" }
 
     filter "system:linux"
         pic "On"
@@ -23,9 +22,9 @@ project "ImGui"
         systemversion "latest"
         staticruntime "On"
 
-        defines
+        files
         {
-            "_IMGUI_X11"
+            "freeglut/src/x11/*.c",
         }
 
     filter "system:windows"
@@ -36,6 +35,11 @@ project "ImGui"
         {
             "_IMGUI_WIN32",
             "_CRT_SECURE_NO_WARNINGS"
+        }
+
+        files
+        {
+            "freeglut/src/mswin/*.c",
         }
 
     filter "configurations:Debug"

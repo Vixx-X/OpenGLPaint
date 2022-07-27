@@ -1,5 +1,3 @@
-require('vstudio')
-
 workspace "OpenGLPaint"
     configurations { "Debug", "Release" }
     startproject "OpenGLPaint"
@@ -29,9 +27,7 @@ project "OpenGLPaint"
 
     files { "src/**.cpp", "src/**.h" }
 
-    libdirs { "vendor/freeglut/lib" }
-
-    links { "glut", "GL", "ImGui" }
+    links { "freeglut", "GL", "ImGui" }
 
     filter "system:linux"
         links { "dl", "pthread", "X11", "Xext", "Xxf86vm", "Xrandr", "Xcursor", "Xinerama", "Xi" }
@@ -42,6 +38,7 @@ project "OpenGLPaint"
     filter "system:windows"
         defines { "_WINDOWS" }
 
+include "vendor/freeglut.lua"
 include "vendor/imgui.lua"
 include "vendor/tinyfiledialogs.lua"
 

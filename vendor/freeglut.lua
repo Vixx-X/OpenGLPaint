@@ -14,6 +14,11 @@ project "freeglut"
         "freeglut/src/util/*.c",
     }
 
+    defines
+    {
+        "FREEGLUT_STATIC",
+    }
+
     filter "system:linux"
         pic "On"
 
@@ -21,6 +26,7 @@ project "freeglut"
         staticruntime "On"
 
         links { "GL" }
+
 
         files
         {

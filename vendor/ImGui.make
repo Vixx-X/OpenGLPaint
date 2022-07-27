@@ -22,8 +22,8 @@ ifeq ($(config),debug)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../bin/Debug/libfreeglut_staticd.a -lGL
-  LDDEPS += ../bin/Debug/libfreeglut_staticd.a
+  LIBS += ../bin/Debug/libfreeglut.a -lGL
+  LDDEPS += ../bin/Debug/libfreeglut.a
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
@@ -49,8 +49,8 @@ ifeq ($(config),release)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -flto -O2 -fPIC
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -flto -O2 -fPIC
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../bin/Release/libfreeglut_staticd.a -lGL
-  LDDEPS += ../bin/Release/libfreeglut_staticd.a
+  LIBS += ../bin/Release/libfreeglut.a -lGL
+  LDDEPS += ../bin/Release/libfreeglut.a
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -flto -s
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS

@@ -27,7 +27,7 @@ project "OpenGLPaint"
 
     files { "src/**.cpp", "src/**.h" }
 
-    links { "freeglut_staticd", "ImGui", "tinyfiledialogs" }
+    links { "freeglut", "ImGui", "tinyfiledialogs" }
 
     defines
     {

@@ -1,4 +1,4 @@
-project "freeglut_staticd"
+project "freeglut"
     kind "StaticLib"
     language "C"
     architecture "x86_64"

@@ -15,7 +15,7 @@ project "ImGui"
         "imgui/backends/imgui_impl_opengl2.cpp",
     }
 
-    links { "freeglut_staticd" }
+    links { "freeglut" }
 
     filter "system:linux"
         pic "On"

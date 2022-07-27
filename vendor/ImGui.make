@@ -15,7 +15,7 @@ ifeq ($(config),debug)
   TARGETDIR = ../bin/Debug
   TARGET = $(TARGETDIR)/libImGui.a
   OBJDIR = ../obj/Debug/Debug/ImGui
-  DEFINES += -DDEBUG -DDEBUG_SHADER -DFREEGLUT_STATIC -D_IMGUI_X11
+  DEFINES += -DDEBUG -DDEBUG_SHADER -D_IMGUI_X11
   INCLUDES += -Iimgui -Ifreeglut/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
@@ -42,7 +42,7 @@ ifeq ($(config),release)
   TARGETDIR = ../bin/Release
   TARGET = $(TARGETDIR)/libImGui.a
   OBJDIR = ../obj/Release/Release/ImGui
-  DEFINES += -DRELEASE -DFREEGLUT_STATIC -D_IMGUI_X11
+  DEFINES += -DRELEASE -D_IMGUI_X11
   INCLUDES += -Iimgui -Ifreeglut/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)

@@ -15,7 +15,7 @@ ifeq ($(config),debug)
   TARGETDIR = ../bin/Debug
   TARGET = $(TARGETDIR)/libfreeglut.a
   OBJDIR = ../obj/Debug/Debug/freeglut
-  DEFINES += -DDEBUG -DDEBUG_SHADER -DFREEGLUT_STATIC
+  DEFINES += -DDEBUG -DDEBUG_SHADER
   INCLUDES += -Ifreeglut/include -Ifreeglut/src
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
@@ -42,7 +42,7 @@ ifeq ($(config),release)
   TARGETDIR = ../bin/Release
   TARGET = $(TARGETDIR)/libfreeglut.a
   OBJDIR = ../obj/Release/Release/freeglut
-  DEFINES += -DRELEASE -DFREEGLUT_STATIC
+  DEFINES += -DRELEASE
   INCLUDES += -Ifreeglut/include -Ifreeglut/src
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)

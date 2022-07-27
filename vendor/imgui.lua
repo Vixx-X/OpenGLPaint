@@ -15,11 +15,6 @@ project "ImGui"
         "imgui/backends/imgui_impl_opengl2.cpp",
     }
 
-    defines
-    {
-        "FREEGLUT_STATIC",
-    }
-
     links { "freeglut" }
 
     filter "system:linux"

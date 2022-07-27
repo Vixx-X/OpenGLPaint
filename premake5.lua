@@ -27,7 +27,12 @@ project "OpenGLPaint"
 
     files { "src/**.cpp", "src/**.h" }
 
-    links { "freeglut", "ImGui", "tinyfiledialogs" }
+    links { "freeglut_staticd", "ImGui", "tinyfiledialogs" }
+
+    defines
+    {
+        "FREEGLUT_STATIC"
+    }
 
     filter "system:linux"
         links { "GL", "dl", "pthread", "X11", "Xext", "Xxf86vm", "Xrandr", "Xcursor", "Xinerama", "Xi" }

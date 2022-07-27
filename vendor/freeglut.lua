@@ -1,4 +1,4 @@
-project "freeglut"
+project "freeglut_staticd"
     kind "StaticLib"
     language "C"
     architecture "x86_64"
@@ -14,6 +14,11 @@ project "freeglut"
         "freeglut/src/util/*.c",
     }
 
+    defines
+    {
+        "FREEGLUT_STATIC"
+    }
+
     filter "system:linux"
         pic "On"
 
@@ -21,7 +26,6 @@ project "freeglut"
         staticruntime "On"
 
         links { "GL" }
-
 
         files
         {
@@ -33,12 +37,6 @@ project "freeglut"
         staticruntime "On"
 
         links { "OpenGL32" }
-
-        defines
-        {
-            "_IMGUI_WIN32",
-            "_CRT_SECURE_NO_WARNINGS"
-        }
 
         files
         {

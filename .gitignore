@@ -41,3 +41,4 @@
 Makefile
 vendor/Makefile
 OpenGLPaint.make
+**/*.make

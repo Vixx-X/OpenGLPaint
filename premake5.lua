@@ -27,15 +27,16 @@ project "OpenGLPaint"
 
     files { "src/**.cpp", "src/**.h" }
 
-    links { "freeglut", "GL", "ImGui" }
+    links { "freeglut", "ImGui" }
 
     filter "system:linux"
-        links { "dl", "pthread", "X11", "Xext", "Xxf86vm", "Xrandr", "Xcursor", "Xinerama", "Xi" }
+        links { "GL", "dl", "pthread", "X11", "Xext", "Xxf86vm", "Xrandr", "Xcursor", "Xinerama", "Xi" }
         libdirs { os.findlib("X11") }
 
         defines { "_X11" }
 
     filter "system:windows"
+        links { "OpenGL32" }
         defines { "_WINDOWS" }
 
 include "vendor/freeglut.lua"

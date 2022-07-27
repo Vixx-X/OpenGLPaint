@@ -14,13 +14,13 @@ project "freeglut"
         "freeglut/src/util/*.c",
     }
 
-    links { "GL" }
-
     filter "system:linux"
         pic "On"
 
         systemversion "latest"
         staticruntime "On"
+
+        links { "GL" }
 
         files
         {
@@ -30,6 +30,8 @@ project "freeglut"
     filter "system:windows"
         systemversion "latest"
         staticruntime "On"
+
+        links { "OpenGL32" }
 
         defines
         {

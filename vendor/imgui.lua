@@ -15,13 +15,15 @@ project "ImGui"
         "imgui/backends/imgui_impl_opengl2.cpp",
     }
 
-    links { "freeglut", "GL" }
+    links { "freeglut" }
 
     filter "system:linux"
         pic "On"
 
         systemversion "latest"
         staticruntime "On"
+
+        links { "GL" }
 
         defines
         {
@@ -31,6 +33,8 @@ project "ImGui"
     filter "system:windows"
         systemversion "latest"
         staticruntime "On"
+
+        links { "OpenGL32" }
 
         defines
         {

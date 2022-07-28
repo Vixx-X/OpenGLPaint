@@ -1,7 +1,7 @@
 project "tinyfiledialogs"
 	kind "StaticLib"
 	language "C"
-	architecture "x86_64"
+	architecture "x86"
 
 	targetdir "../bin/%{cfg.buildcfg}"
 	objdir "../obj/%{cfg.buildcfg}"

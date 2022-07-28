@@ -1,7 +1,7 @@
 project "ImGui"
     kind "StaticLib"
     language "C++"
-    architecture "x86_64"
+    architecture "x86"
 
     targetdir "../bin/%{cfg.buildcfg}"
     objdir "../obj/%{cfg.buildcfg}"
@@ -13,6 +13,14 @@ project "ImGui"
         "imgui/*.cpp",
         "imgui/backends/imgui_impl_glut.cpp",
         "imgui/backends/imgui_impl_opengl2.cpp",
+    }
+
+    defines
+    {
+        "FREEGLUT_STATIC",
+        "FREEGLUT_LIB_PRAGMAS=1",
+        "NDEBUG",
+        "GLUT_DISABLE_ATEXIT_HACK",
     }
 
     links { "freeglut" }
@@ -34,12 +42,13 @@ project "ImGui"
         systemversion "latest"
         staticruntime "On"
 
-        links { "OpenGL32" }
+        includedirs { "freeglut/src/mswin" }
 
         defines
         {
             "_IMGUI_WIN32",
-            "_CRT_SECURE_NO_WARNINGS"
+            "_CRT_SECURE_NO_WARNINGS",
+            "_WIN32",
         }
 
     filter "configurations:Debug"

@@ -13,18 +13,18 @@ endif
 ifeq ($(config),debug)
   RESCOMP = windres
   TARGETDIR = ../bin/Debug
-  TARGET = $(TARGETDIR)/libfreeglut.a
+  TARGET = $(TARGETDIR)/libfreeglut_static.a
   OBJDIR = ../obj/Debug/Debug/freeglut
-  DEFINES += -DDEBUG -DDEBUG_SHADER -DFREEGLUT_STATIC
-  INCLUDES += -Ifreeglut/include -Ifreeglut/src
+  DEFINES += -DDEBUG -DDEBUG_SHADER -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS=1 -DNDEBUG -DGLUT_DISABLE_ATEXIT_HACK
+  INCLUDES += -Ifreeglut/include -Ifreeglut/src -Ifreeglut/src/mswin
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -fPIC -g
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -fPIC -g
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += -lGL
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef
@@ -40,18 +40,18 @@ endif
 ifeq ($(config),release)
   RESCOMP = windres
   TARGETDIR = ../bin/Release
-  TARGET = $(TARGETDIR)/libfreeglut.a
+  TARGET = $(TARGETDIR)/libfreeglut_static.a
   OBJDIR = ../obj/Release/Release/freeglut
-  DEFINES += -DRELEASE -DFREEGLUT_STATIC
-  INCLUDES += -Ifreeglut/include -Ifreeglut/src
+  DEFINES += -DRELEASE -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS=1 -DNDEBUG -DGLUT_DISABLE_ATEXIT_HACK
+  INCLUDES += -Ifreeglut/include -Ifreeglut/src -Ifreeglut/src/mswin
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -flto -O2 -fPIC
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -flto -O2 -fPIC
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -flto -O2 -fPIC
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -flto -O2 -fPIC
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += -lGL
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -flto -s
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -flto -s
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef

@@ -18,7 +18,6 @@ project "OpenGLPaint"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
-    architecture "x86_64"
 
     targetdir "bin/%{cfg.buildcfg}"
     objdir "obj/%{cfg.buildcfg}"
@@ -31,18 +30,33 @@ project "OpenGLPaint"
 
     defines
     {
-        "FREEGLUT_STATIC"
+        "FREEGLUT_STATIC",
+        "FREEGLUT_LIB_PRAGMAS=1",
+        "NDEBUG",
+        "GLUT_DISABLE_ATEXIT_HACK",
     }
 
     filter "system:linux"
+        architecture "x86_64"
         links { "GL", "dl", "pthread", "X11", "Xext", "Xxf86vm", "Xrandr", "Xcursor", "Xinerama", "Xi" }
         libdirs { os.findlib("X11") }
 
         defines { "_X11" }
 
     filter "system:windows"
-        links { "OpenGL32" }
-        defines { "_WINDOWS" }
+        architecture "x86"
+        defines {
+            "_WINDOWS",
+            "_WIN32",
+            "_CRT_SECURE_NO_WARNINGS",
+        }
+        includedirs { "freeglut/src/mswin" }
+
+        files
+        {
+            "freeglut/src/mswin/*.c",
+            "freeglut/src/mswin/*.h",
+        }
 
 include "vendor/freeglut.lua"
 include "vendor/imgui.lua"

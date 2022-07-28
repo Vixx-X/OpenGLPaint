@@ -15,16 +15,16 @@ ifeq ($(config),debug)
   TARGETDIR = ../bin/Debug
   TARGET = $(TARGETDIR)/libImGui.a
   OBJDIR = ../obj/Debug/Debug/ImGui
-  DEFINES += -DDEBUG -DDEBUG_SHADER -D_IMGUI_X11
+  DEFINES += -DDEBUG -DDEBUG_SHADER -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS=1 -DNDEBUG -DGLUT_DISABLE_ATEXIT_HACK -D_IMGUI_X11
   INCLUDES += -Iimgui -Ifreeglut/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -fPIC -g
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -fPIC -g
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -fPIC -g
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../bin/Debug/libfreeglut.a -lGL
-  LDDEPS += ../bin/Debug/libfreeglut.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
+  LIBS += ../bin/Debug/libfreeglut_static.a -lGL
+  LDDEPS += ../bin/Debug/libfreeglut_static.a
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef
@@ -42,16 +42,16 @@ ifeq ($(config),release)
   TARGETDIR = ../bin/Release
   TARGET = $(TARGETDIR)/libImGui.a
   OBJDIR = ../obj/Release/Release/ImGui
-  DEFINES += -DRELEASE -D_IMGUI_X11
+  DEFINES += -DRELEASE -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS=1 -DNDEBUG -DGLUT_DISABLE_ATEXIT_HACK -D_IMGUI_X11
   INCLUDES += -Iimgui -Ifreeglut/include
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -flto -O2 -fPIC
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -flto -O2 -fPIC
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -flto -O2 -fPIC
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -flto -O2 -fPIC
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../bin/Release/libfreeglut.a -lGL
-  LDDEPS += ../bin/Release/libfreeglut.a
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -flto -s
+  LIBS += ../bin/Release/libfreeglut_static.a -lGL
+  LDDEPS += ../bin/Release/libfreeglut_static.a
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -flto -s
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef
